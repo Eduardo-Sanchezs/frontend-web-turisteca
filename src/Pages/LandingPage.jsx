@@ -11,6 +11,7 @@ const LandingPage = () => {
                             histórica y gastronómica. Sin embargo, la planificación eficiente de un viaje puede ser un reto debido a la dispersión de información, la falta de integración de servicios y la
                             necesidad de fomentar un turismo más sostenible. Por suerte nosotros tenemos la solución, Somos turisteca y nos dedicamos a promover el ecoturismo por medio de nuestra App, permitiendo a nuestros usuarios ser más responsables en sus viajes y proteger tus lugares favoritos en la región huasteca.
                         </p>
+                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestiae libero quod, repellat inventore explicabo, veritatis corporis veniam quas consequatur magnam itaque dolorem culpa earum possimus porro temporibus ullam. Rerum, eligendi?</p>
                     </nav>
                 </div>
             </div>
