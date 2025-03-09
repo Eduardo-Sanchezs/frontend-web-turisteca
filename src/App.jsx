@@ -4,6 +4,7 @@ import Footer from './Components/Footer'
 import LandingPage from './Pages/LandingPage';
 import Conocenos from './Pages/Conocenos';
 import Anuncio from './Pages/Anuncio';
+import Destinos from './Pages/Destinos';
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/conocenos" element={<Conocenos />} />
-        <Route path="/destinos" element={<div>Destinos</div>} />
+        <Route path="/destinos" element={<Destinos />} />
         <Route path='/anuncio' element={<Anuncio />} />
 
       </Routes>

@@ -53,7 +53,9 @@ const LandingPage = () => {
                         Somos turisteca y nos dedicamos a promover el ecoturismo por medio de nuestra App, permitiendo a nuestros usuarios ser más responsables en sus viajes y proteger sus lugares favoritos en la región Huasteca.
                     </p>
 
-                    <Link to="/Anuncio.jsx" className='bg-[#409223] rounded-3xl text-white'> ¿Quiénes Somos? </Link>
+                    <div className='bg-[#409223] w-45 h-auto flex rounded-full justify-center items-center mt-3'>
+                        <Link to="/Anuncio" className='text-white'> Conoce Nuestra App </Link>
+                    </div>
 
                 </div>
             </div>
@@ -103,6 +105,7 @@ const LandingPage = () => {
                     </p>
                 </div>
             </div>
+            <div className='pt-30'></div>
         </>
     );
 }
@@ -137,10 +140,10 @@ export function ImageSlider() {
                     <img key={index} src={img} alt="slider" className="w-full flex-shrink-0 object-cover h-full" onMouseEnter={() => setIsAutoSliding(false)} onMouseLeave={() => setIsAutoSliding(true)} />
                 ))}
             </div>
-            <button onClick={prevSlide} className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-800 p-2 rounded-full text-white">
+            <button onClick={prevSlide} className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-[#409223] p-2 rounded-full text-white">
                 <ChevronLeft />
             </button>
-            <button onClick={nextSlide} className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-800 p-2 rounded-full text-white">
+            <button onClick={nextSlide} className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-[#409223]  p-2 rounded-full text-white">
                 <ChevronRight />
             </button>
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
