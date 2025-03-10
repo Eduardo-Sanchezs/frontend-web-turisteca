@@ -77,12 +77,14 @@ const catalago = [
 const Destinos = () => {
     return (
         <>
-            <div className="h-screen bg-[url('/BackGround.jpg')] bg-cover bg-center flex items-center justify-center px-4">
-                <div className="flex flex-col max-w-lg md:max-w-2xl lg:max-w-4xl w-full p-6 md:p-10 rounded-2xl shadow-lg text-center" style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)' }}>
-                    <h1 className='text-3xl md:text-5xl font-serif text-[#409223] mb-4'>Destinos Turísticos En La Huasteca Potosina</h1>
-                    <div className='flex flex-col gap-y-6 text-lg md:text-2xl'>
-                        <p>En esta sección, encontrarás información detallada sobre los increíbles destinos turísticos que ofrece la hermosa región de la Huasteca Potosina. Descubre impresionantes cascadas, exuberantes selvas, antiguas zonas arqueológicas y mucho más.</p>
-                        <p>Nuestro objetivo es brindarte toda la información necesaria para que puedas planificar tu visita y disfrutar al máximo de estos sitios turísticos. Te proporcionaremos datos prácticos, consejos útiles y recomendaciones para que tu experiencia sea inolvidable.</p>
+            <div className="h-screen bg-[url('/BackGround.jpg')] bg-cover bg-center">
+                <div className='flex flex-row w-auto h-screen justify-center items-center'>
+                    <div className='flex flex-col w-300 h-auto min-h-lg justify-center items-center rounded-3xl' style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)' }}>
+                        <br /><h1 className='text-6xl font-serif text-[#409223] text-center'> Destinos Turisticos En La Huasteca Potosina</h1><br />
+                        <div className='flex flex-col w-3/4 text-center text-2xl'>
+                            <p>En esta sección, encontrarás información detallada sobre los increíbles destinos turísticos que ofrece la hermosa región de la Huasteca Potosina. Descubre impresionantes cascadas, exuberantes selvas, antiguas zonas arqueológicas y mucho más.</p><br />
+                            <p>Nuestro objetivo es brindarte toda la información necesaria para que puedas planificar tu visita y disfrutar al máximo de estos sitios turísticos. Te proporcionaremos datos prácticos, consejos útiles y recomendaciones para que tu experiencia sea inolvidable.</p>
+                            <br /></div>
                     </div>
                 </div>
             </div>
