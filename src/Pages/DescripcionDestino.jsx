@@ -1,5 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+const images = [
+  "/BG.png",
+  "/Coordenadas.jpg",
+  "/TienePotencial.jpeg",
+  "/TingLing.jpg",
+  "/Mapa.jpg"
+];
+
 
 const hoteles = [
   { id: 1, nombre: "Hotel y Eco-Expediciones Sundial", ubicacion: "El Naranjo, SLP.", img: "/hotel1.jpg", link: "/hotel1" },
@@ -34,6 +44,8 @@ const DescripcionDestino = () => {
         </div>
       </div>
 
+      <ImageSlider />
+
       <div className="w-full flex justify-center mt-10 px-4">
         <div className="max-w-screen-lg w-full">
           <h1 className="text-[#409223] text-4xl md:text-3xl font-bold mt-5 text-center">Explora Su Ubicación:</h1>
@@ -46,15 +58,37 @@ const DescripcionDestino = () => {
       <ListaHoteles expandido={expandido} setExpandido={setExpandido} />
 
 
-      <div className="w-full flex justify-center mt-10 px-4">
+      <div className="w-full flex justify-center mt-10 px-4 ">
         <div className="max-w-screen-lg w-full">
           <h1 className="text-[#409223] text-4xl md:text-3xl font-bold mt-5 text-center">Reseñas Falsotas:</h1>
-          <br /><br /><br />
-          <p>Ay que bonito</p>
-          <p>Gei el que no vaya</p>
-          <p>ta bien culero. _.</p>
+          <div className="max-w-screen-lg w- flex flex-row justify-center items-center space-x-3 mt-4">
+            <div className="w-1/3 border-2 border-gray-500 rounded-2xl">
+              <div className="flex justify-center items-center">
+                <img className="w-20 h-12" src="Usuario.png" alt="Foto De Usuario" />
+              </div>
+              <h1 className="font-bold text-center">Crisely Saldivar</h1>
+              <p className="text-center">Ay que bonito</p>
+            </div>
+
+            <div className="w-1/3 border-2 border-gray-500 rounded-2xl">
+              <div className="flex justify-center items-center">
+                <img className="w-20 h-12" src="Usuario.png" alt="Foto De Usuario" />
+              </div>
+              <h1 className="font-bold text-center">Marilu Toledo</h1>
+              <p className="text-center">Gei El Que No Vaya</p>
+            </div>
+
+            <div className="w-1/3 border-2 border-gray-500 rounded-2xl">
+              <div className="flex justify-center items-center">
+                <img className="w-20 h-12" src="Usuario.png" alt="Foto De Usuario" />
+              </div>
+              <h1 className="font-bold text-center">Estrella Banuet</h1>
+              <p className="text-center">3 x 2 = 5</p>
+            </div>
+          </div>
         </div>
       </div>
+      <div className='pt-30'></div>
     </>
   );
 };
@@ -65,7 +99,7 @@ const ListaHoteles = ({ expandido, setExpandido }) => {
 
   return (
     <div className="w-full flex flex-col items-center mt-10 px-4">
-      <h2 className="text-[#409223] text-2xl md:text-3xl font-bold mb-5 text">Hoteles En La Zona:</h2>
+      <h2 className="text-[#409223] text-2xl md:text-3xl font-bold mb-5 text-center">Hoteles En La Zona:</h2>
 
       {/* Contenedor de tarjetas centrado y expansión hacia abajo */}
       <div className="max-w-screen-lg w-full mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 transition-all duration-500">
@@ -94,6 +128,52 @@ const ListaHoteles = ({ expandido, setExpandido }) => {
     </div>
   );
 };
+
+
+export function ImageSlider() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoSliding, setIsAutoSliding] = useState(true);
+
+  useEffect(() => {
+    if (!isAutoSliding) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 2300);
+    return () => clearInterval(interval);
+  }, [isAutoSliding]);
+
+  const prevSlide = () => {
+    setIsAutoSliding(false);
+    setCurrentIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
+  };
+
+  const nextSlide = () => {
+    setIsAutoSliding(false);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
+
+  return (
+    <div className="relative w-full md:w-2/3 lg:w-1/2 h-[300px] md:h-[400px] mx-auto overflow-hidden rounded-lg shadow-lg mt-15">
+      <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
+        {images.map((img, index) => (
+          <img key={index} src={img} alt="slider" className="w-full flex-shrink-0 object-cover h-full" onMouseEnter={() => setIsAutoSliding(false)} onMouseLeave={() => setIsAutoSliding(true)} />
+        ))}
+      </div>
+      <button onClick={prevSlide} className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-[#409223] p-2 rounded-full text-white">
+        <ChevronLeft />
+      </button>
+      <button onClick={nextSlide} className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-[#409223]  p-2 rounded-full text-white">
+        <ChevronRight />
+      </button>
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        {images.map((_, index) => (
+          <div key={index} className={`w-3 h-3 rounded-full ${currentIndex === index ? "bg-white" : "bg-gray-500"}`} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 
 export default DescripcionDestino;
 

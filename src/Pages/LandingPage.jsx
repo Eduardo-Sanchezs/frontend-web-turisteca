@@ -119,7 +119,7 @@ export function ImageSlider() {
         if (!isAutoSliding) return;
         const interval = setInterval(() => {
             setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-        }, 3000);
+        }, 2300);
         return () => clearInterval(interval);
     }, [isAutoSliding]);
 
@@ -173,7 +173,7 @@ function Destinos() {
             </div>
 
             {/* Botón de "Mostrar Más" centrado y responsivo */}
-            <Link to="/destinos" className="mt-5 px-6 py-3 bg-[#409223] text-white font-bold rounded-lg hover:bg-[#36791c] transition text-center w-full sm:w-auto">
+            <Link to="/Destinos" className="mt-5 px-6 py-3 bg-[#409223] text-white font-bold rounded-lg hover:bg-[#36791c] transition text-center w-full sm:w-auto">
                 Mostrar Más
             </Link>
         </div>

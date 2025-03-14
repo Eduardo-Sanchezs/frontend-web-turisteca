@@ -6,6 +6,8 @@ import Conocenos from './Pages/Conocenos';
 import Anuncio from './Pages/Anuncio';
 import Destinos from './Pages/Destinos';
 import DescripcionDestino from './Pages/DescripcionDestino';
+import DescripcionHotel from './Pages/DescripcionHotel';
+import RickAndMorthy from './Pages/RickAndMorthy';
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Route path="/destinos" element={<Destinos />} />
         <Route path='/anuncio' element={<Anuncio />} />
         <Route path='/descripcion-destino' element={<DescripcionDestino />} />
+        <Route path='/descripcion-hotel' element={<DescripcionHotel />} />
+        <Route path='/rick-and-morty' element={<RickAndMorthy />} />
 
 
       </Routes>
