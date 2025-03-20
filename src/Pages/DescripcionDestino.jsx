@@ -1,22 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Aynose from "./Aynose";
 
 const images = [
-  "/BG.png",
-  "/Coordenadas.jpg",
-  "/TienePotencial.jpeg",
-  "/TingLing.jpg",
-  "/Mapa.jpg"
+  "/BackGround.jpg",
+  "Huasteca_1.jpg",
+  "Huasteca_2.jpg",
+  "Huasteca_3.jpg",
+  "Huasteca_4.jpg",
+  "Huasteca_5.jpg",
+  "Huasteca_6.jpg",
+  "Huasteca_7.jpg",
 ];
 
 
 const hoteles = [
-  { id: 1, nombre: "Hotel y Eco-Expediciones Sundial", ubicacion: "El Naranjo, SLP.", img: "/hotel1.jpg", link: "/hotel1" },
-  { id: 2, nombre: "Hotel Salto del Meco - Huasteca Secreta", ubicacion: "El Naranjo, SLP.", img: "/hotel2.jpg", link: "/hotel2" },
-  { id: 3, nombre: "Hotel Del Valle", ubicacion: "El Naranjo, SLP.", img: "/hotel3.jpg", link: "/hotel3" },
-  { id: 4, nombre: "Hotel La Huasteca", ubicacion: "Ciudad Valles, SLP.", img: "/hotel4.jpg", link: "/hotel4" },
-  { id: 5, nombre: "Hotel Paraíso Encantado", ubicacion: "Xilitla, SLP.", img: "/hotel5.jpg", link: "/hotel5" }
+  { id: 1, nombre: "Hotel y Eco-Expediciones Sundial", ubicacion: "El Naranjo, SLP.", img: "Hotel_1.jpg", link: "/hotel1" },
+  { id: 2, nombre: "Hotel Salto del Meco - Huasteca Secreta", ubicacion: "El Naranjo, SLP.", img: "/Hotel_2.jpg", link: "/hotel2" },
+  { id: 3, nombre: "Hotel Del Valle", ubicacion: "El Naranjo, SLP.", img: "/Hotel_3.jpg", link: "/hotel3" },
+  { id: 4, nombre: "Hotel La Huasteca", ubicacion: "Ciudad Valles, SLP.", img: "/Hotel_4.jpg", link: "/hotel4" },
+  { id: 5, nombre: "Hotel Paraíso Encantado", ubicacion: "Xilitla, SLP.", img: "/Hotel_5.jpg", link: "/hotel5" }
 ];
 
 const DescripcionDestino = () => {
@@ -24,18 +28,18 @@ const DescripcionDestino = () => {
 
   return (
     <>
-      <div className="h-screen bg-[url('/BackGround.jpg')] bg-cover bg-center">
+      <div className="h-screen bg-[url('/Huasteca_2.jpg')] bg-cover bg-center">
         <div className="flex flex-row w-auto h-screen justify-center items-center">
           <div className="flex flex-col w-300 h-auto min-h-lg justify-center items-center rounded-3xl" style={{ backgroundColor: "rgba(255, 255, 255, 0.7)" }}>
             <br /><h1 className="text-6xl font-serif text-[#409223] text-center">
-              Cascada Aynose</h1><br />
+              Cascada El Salto De Agua</h1><br />
           </div>
         </div>
       </div>
 
       <div className="w-full flex justify-center mt-10 px-4">
         <div className="max-w-screen-lg w-full">
-          <h1 className="text-[#409223] text-4xl md:text-5xl font-bold mt-5">Cascada Aynose</h1>
+          <h1 className="text-[#409223] text-4xl md:text-5xl font-bold mt-5">Cascada El Salto De Agua</h1>
           <p className="text-justify mt-5 text-gray-700">
             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Autem a libero, recusandae fugit tenetur nostrum laboriosam sit, iste, laborum distinctio doloremque facere! Omnis error porro ipsam, dignissimos facere id animi.
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure a magnam amet molestias quas nesciunt error quod voluptas at dolor eum qui enim deserunt repellendus possimus ab, architecto aperiam iusto.
@@ -48,11 +52,21 @@ const DescripcionDestino = () => {
 
       <div className="w-full flex justify-center mt-10 px-4">
         <div className="max-w-screen-lg w-full">
-          <h1 className="text-[#409223] text-4xl md:text-3xl font-bold mt-5 text-center">Explora Su Ubicación:</h1>
-          <br /><br /><br />
-          <p>Aqui deberia ir el mapa con la API, pero, xd</p>
+          <h1 className="text-[#409223] text-4xl md:text-3xl font-bold mt-5 text-center">
+            Explora Su Ubicación:
+          </h1>
+          <div className="flex justify-center mt-5">
+            <img
+              className="w-45/64 rounded-lg shadow-lg"
+              src="Maps.jpg"
+              alt="API Google Maps"
+            />
+          </div>
         </div>
       </div>
+
+
+      <Aynose />
 
       {/* Lista de Hoteles */}
       <ListaHoteles expandido={expandido} setExpandido={setExpandido} />
@@ -66,15 +80,15 @@ const DescripcionDestino = () => {
               <div className="flex justify-center items-center">
                 <img className="w-20 h-12" src="Usuario.png" alt="Foto De Usuario" />
               </div>
-              <h1 className="font-bold text-center">Crisely Saldivar</h1>
-              <p className="text-center">Ay que bonito</p>
+              <h1 className="font-bold text-center">Maria Mendoza</h1>
+              <p className="text-center">No me gusta el café.</p>
             </div>
 
             <div className="w-1/3 border-2 border-gray-500 rounded-2xl">
               <div className="flex justify-center items-center">
                 <img className="w-20 h-12" src="Usuario.png" alt="Foto De Usuario" />
               </div>
-              <h1 className="font-bold text-center">Marilu Toledo</h1>
+              <h1 className="font-bold text-center">Karla Sendero</h1>
               <p className="text-center">Gei El Que No Vaya</p>
             </div>
 
@@ -82,7 +96,7 @@ const DescripcionDestino = () => {
               <div className="flex justify-center items-center">
                 <img className="w-20 h-12" src="Usuario.png" alt="Foto De Usuario" />
               </div>
-              <h1 className="font-bold text-center">Estrella Banuet</h1>
+              <h1 className="font-bold text-center">Vanessa Villegas</h1>
               <p className="text-center">3 x 2 = 5</p>
             </div>
           </div>
@@ -98,7 +112,7 @@ const ListaHoteles = ({ expandido, setExpandido }) => {
   const hotelesMostrados = expandido ? hoteles : hoteles.slice(0, 3);
 
   return (
-    <div className="w-full flex flex-col items-center mt-10 px-4">
+    <div className="w-full flex flex-col items-center mt-25  px-4">
       <h2 className="text-[#409223] text-2xl md:text-3xl font-bold mb-5 text-center">Hoteles En La Zona:</h2>
 
       {/* Contenedor de tarjetas centrado y expansión hacia abajo */}

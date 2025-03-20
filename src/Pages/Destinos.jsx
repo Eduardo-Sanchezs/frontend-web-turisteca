@@ -6,79 +6,86 @@ const catalago = [
         id: 1,
         nombre: "Cascada Salto Del Agua",
         ubicacion: "El Naranjo, SLP.",
-        imagen: "",
+        imagen: "ElSalto.jpg",
         link: "/destinos/1"
     },
     {
         id: 2,
         nombre: "Cuevas De Mantetzulel",
         ubicacion: "Aquismón, SLP.",
-        imagen: "",
+        imagen: "Mantetzulel.jpg",
         link: "/destinos/cuevas-mantetzulel"
     },
     {
         id: 3,
         nombre: "Jardín Edward James",
         ubicacion: "Xilitla, SLP.",
-        imagen: "",
+        imagen: "BackGround.jpg",
         link: "/destinos/jardin-edward-james"
     },
     {
         id: 4,
         nombre: "Cascada Salto Del Agua",
         ubicacion: "El Naranjo, SLP.",
-        imagen: "",
-        link: "/destinos/cascada-salto-del-agua"
+        imagen: "ElSalto.jpg",
+        link: "/destinos/1"
     },
     {
         id: 5,
         nombre: "Cuevas De Mantetzulel",
         ubicacion: "Aquismón, SLP.",
-        imagen: "",
+        imagen: "Mantetzulel.jpg",
         link: "/destinos/cuevas-mantetzulel"
     },
     {
         id: 6,
         nombre: "Jardín Edward James",
         ubicacion: "Xilitla, SLP.",
-        imagen: "",
+        imagen: "BackGround.jpg",
         link: "/destinos/jardin-edward-james"
     },
     {
         id: 7,
         nombre: "Cascada Salto Del Agua",
         ubicacion: "El Naranjo, SLP.",
-        imagen: "",
-        link: "/destinos/cascada-salto-del-agua"
+        imagen: "ElSalto.jpg",
+        link: "/destinos/1"
     },
     {
         id: 8,
         nombre: "Cuevas De Mantetzulel",
         ubicacion: "Aquismón, SLP.",
-        imagen: "",
+        imagen: "Mantetzulel.jpg",
         link: "/destinos/cuevas-mantetzulel"
     },
     {
         id: 9,
         nombre: "Jardín Edward James",
         ubicacion: "Xilitla, SLP.",
-        imagen: "",
+        imagen: "BackGround.jpg",
         link: "/destinos/jardin-edward-james"
     },
     {
         id: 10,
-        nombre: "Jardín Edward James",
-        ubicacion: "Xilitla, SLP.",
-        imagen: "",
-        link: "/destinos/jardin-edward-james"
+        nombre: "Cascada Salto Del Agua",
+        ubicacion: "El Naranjo, SLP.",
+        imagen: "ElSalto.jpg",
+        link: "/destinos/1"
     },
     {
         id: 11,
-        nombre: "Aynose",
-        ubicacion: "Aja",
-        imagen: "",
+        nombre: "Cuevas De Mantetzulel",
+        ubicacion: "Aquismón, SLP.",
+        imagen: "Mantetzulel.jpg",
+        link: "/destinos/cuevas-mantetzulel"
+    },
+    {
+        id: 12,
+        nombre: "Jardín Edward James",
+        ubicacion: "Xilitla, SLP.",
+        imagen: "BackGround.jpg",
         link: "/destinos/jardin-edward-james"
-    }
+    },
 ];
 
 const Destinos = () => {

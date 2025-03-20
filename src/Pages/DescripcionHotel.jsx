@@ -3,20 +3,20 @@ import { useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const images = [
-    "/BG.png",
-    "/Coordenadas.jpg",
-    "/TienePotencial.jpeg",
-    "/TingLing.jpg",
-    "/Mapa.jpg"
+    "/Hotel_1.jpg",
+    "/Hotel_2.jpg",
+    "/Hotel_3.jpg",
+    "/Hotel_4.jpg",
+    "/Hotel_5.jpg",
 ];
 
 
 const hoteles = [
-    { id: 1, nombre: "Aynose", ubicacion: "El Naranjo, SLP.", img: "/hotel1.jpg", link: "/hotel1" },
-    { id: 2, nombre: "Quien Sabe", ubicacion: "El Naranjo, SLP.", img: "/hotel2.jpg", link: "/hotel2" },
-    { id: 3, nombre: "Puede Ser", ubicacion: "El Naranjo, SLP.", img: "/hotel3.jpg", link: "/hotel3" },
-    { id: 4, nombre: "Alomejor", ubicacion: "Ciudad Valles, SLP.", img: "/hotel4.jpg", link: "/hotel4" },
-    { id: 5, nombre: "Sepa", ubicacion: "Xilitla, SLP.", img: "/hotel5.jpg", link: "/hotel5" }
+    { id: 1, nombre: "Cascada Salto Del Agua", ubicacion: "El Naranjo, SLP.", img: "/ElSalto.jpg", link: "/hotel1" },
+    { id: 2, nombre: "Cuevas De Mantetzulel", ubicacion: "El Naranjo, SLP.", img: "/Mantetzulel.jpg", link: "/hotel2" },
+    { id: 3, nombre: "Jardín Edward James", ubicacion: "El Naranjo, SLP.", img: "/BackGround.jpg", link: "/hotel3" },
+    { id: 4, nombre: "Cascada Salto Del Agua", ubicacion: "Ciudad Valles, SLP.", img: "/hotel4.jpg", link: "/hotel4" },
+    { id: 5, nombre: "Cuevas De Mantetzulel", ubicacion: "Xilitla, SLP.", img: "/hotel5.jpg", link: "/hotel5" }
 ];
 
 const DescripcionHotel = () => {
@@ -49,8 +49,13 @@ const DescripcionHotel = () => {
             <div className="w-full flex justify-center mt-10 px-4">
                 <div className="max-w-screen-lg w-full">
                     <h1 className="text-[#409223] text-4xl md:text-3xl font-bold mt-5 text-center">Explora Su Ubicación:</h1>
-                    <br /><br /><br />
-                    <p>Aqui deberia ir el mapa con la API, pero, xd</p>
+                    <div className="flex justify-center mt-5">
+                        <img
+                            className="w-45/64 rounded-lg shadow-lg"
+                            src="Maps.jpg"
+                            alt="API Google Maps"
+                        />
+                    </div>
                 </div>
             </div>
 
@@ -66,7 +71,7 @@ const DescripcionHotel = () => {
                             <div className="flex justify-center items-center">
                                 <img className="w-20 h-12" src="Usuario.png" alt="Foto De Usuario" />
                             </div>
-                            <h1 className="font-bold text-center">Crisely Saldivar</h1>
+                            <h1 className="font-bold text-center">Maria Mendoza</h1>
                             <p className="text-center">Ay que bonito</p>
                         </div>
 
@@ -74,7 +79,7 @@ const DescripcionHotel = () => {
                             <div className="flex justify-center items-center">
                                 <img className="w-20 h-12" src="Usuario.png" alt="Foto De Usuario" />
                             </div>
-                            <h1 className="font-bold text-center">Marilu Toledo</h1>
+                            <h1 className="font-bold text-center">Karla Sendero</h1>
                             <p className="text-center">Gei El Que No Vaya</p>
                         </div>
 
@@ -82,7 +87,7 @@ const DescripcionHotel = () => {
                             <div className="flex justify-center items-center">
                                 <img className="w-20 h-12" src="Usuario.png" alt="Foto De Usuario" />
                             </div>
-                            <h1 className="font-bold text-center">Estrella Banuet</h1>
+                            <h1 className="font-bold text-center">Vanessa Villegas</h1>
                             <p className="text-center">3 x 2 = 5</p>
                         </div>
                     </div>

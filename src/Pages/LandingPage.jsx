@@ -4,36 +4,39 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const images = [
-    "/BG.png",
-    "/Coordenadas.jpg",
-    "/TienePotencial.jpeg",
-    "/TingLing.jpg",
-    "/Mapa.jpg"
+    "/BackGround.jpg",
+    "Huasteca_1.jpg",
+    "Huasteca_2.jpg",
+    "Huasteca_3.jpg",
+    "Huasteca_4.jpg",
+    "Huasteca_5.jpg",
+    "Huasteca_6.jpg",
+    "Huasteca_7.jpg",
 ];
 
 const destinos = [
     {
         nombre: "Cascada Salto Del Agua",
         ubicacion: "El Naranjo, SLP.",
-        imagen: "", // Agrega aquí la ruta de la imagen
+        imagen: "ElSalto.jpg", // Agrega aquí la ruta de la imagen
         link: "/destinos/cascada-salto-del-agua"
     },
     {
         nombre: "Cuevas De Mantetzulel",
         ubicacion: "Aquismón, SLP.",
-        imagen: "", // Agrega aquí la ruta de la imagen
+        imagen: "Mantetzulel.jpg", // Agrega aquí la ruta de la imagen
         link: "/destinos/cuevas-mantetzulel"
     },
     {
         nombre: "Jardín Edward James",
         ubicacion: "Xilitla, SLP.",
-        imagen: "", // Agrega aquí la ruta de la imagen
+        imagen: "BackGround.jpg", // Agrega aquí la ruta de la imagen
         link: "/destinos/jardin-edward-james"
     },
     {
-        nombre: "Aynose",
-        ubicacion: "Aja",
-        imagen: "", // Agrega aquí la ruta de la imagen
+        nombre: "Castillo De Beto Ramón",
+        ubicacion: "Axtla De Terrazas, SLP.",
+        imagen: "BetoRamon.jpg", // Agrega aquí la ruta de la imagen
         link: "/destinos/jardin-edward-james"
     }
 ];
@@ -100,8 +103,8 @@ const LandingPage = () => {
             <div className="w-full flex flex-row justify-center mt-15">
                 <div className="max-w-screen-lg w-full">
                     <h1 className="text-[#409223] text-4xl text-center md:text-left">¿Sabías Que?</h1>
-                    <p className="text-justify">
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Similique commodi, impedit eligendi illum placeat non odit itaque sunt consequatur amet. Maiores quae deleniti enim cumque corrupti animi nobis, velit dolorem?
+                    <p className="text-justify mt-3">
+                        El Nombre de la región Huasteca proviene de los huastecos, una civilización prehispánica que tenía su propia lengua, el téenek, y una cultura distinta a la de los mexicas y mayas. A diferencia de otras culturas mesoamericanas, los huastecos eran conocidos por su estilo de vestimenta minimalista, ya que debido al clima cálido y húmedo de la región, solían usar muy poca ropa. Incluso los conquistadores españoles se sorprendieron al ver su forma de vestir y sus elaboradas modificaciones corporales, como el limado de dientes y los tatuajes.
                     </p>
                 </div>
             </div>
@@ -164,7 +167,7 @@ function Destinos() {
             {/* Contenedor de tarjetas con diseño responsivo */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 max-w-screen-lg w-full">
                 {destinos.map((destino, index) => (
-                    <Link key={index} to={destino.link} className="flex flex-col items-center border rounded-lg shadow-lg p-3 hover:scale-105 transition w-full">
+                    <Link key={index} to={destino.link} className="flex flex-col items-center border rounded-lg shadow-lg p-3 hover:scale-105 transition w-full border-[#9DC68E]">
                         <img src={destino.imagen} alt={destino.nombre} className="w-full h-48 object-cover rounded-lg" />
                         <h3 className="text-[#409223] font-bold mt-2 text-center">{destino.nombre}</h3>
                         <p className="text-gray-500 text-sm text-center">{destino.ubicacion}</p>
@@ -173,7 +176,7 @@ function Destinos() {
             </div>
 
             {/* Botón de "Mostrar Más" centrado y responsivo */}
-            <Link to="/Destinos" className="mt-5 px-6 py-3 bg-[#409223] text-white font-bold rounded-lg hover:bg-[#36791c] transition text-center w-full sm:w-auto">
+            <Link to="/destinos" className="mt-5 px-6 py-3 bg-[#409223] text-white font-bold rounded-lg hover:bg-[#36791c] transition text-center w-full sm:w-auto">
                 Mostrar Más
             </Link>
         </div>
