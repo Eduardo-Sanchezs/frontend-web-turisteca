@@ -10,8 +10,8 @@ function Header() {
             <Link to="/"><h1 className='text-lg font-bold'>turisteca</h1></Link>
           </nav>
           <nav className='space-x-5 flex items-center'>
-            <Link to="/Conocenos">Conoce turisteca</Link>
-            <Link to="/Destinos">Destinos</Link>
+            <Link to="/conocenos">Conoce turisteca</Link>
+            <Link to="/destinos">Destinos</Link>
           </nav>
         </div>
       </header>

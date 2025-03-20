@@ -1,78 +1,85 @@
 import React from 'react'
 import { Link } from "react-router-dom";
 
-
-
 const catalago = [
     {
+        id: 1,
         nombre: "Cascada Salto Del Agua",
         ubicacion: "El Naranjo, SLP.",
         imagen: "",
-        link: "/destinos/cascada-salto-del-agua"
+        link: "/destinos/1"
     },
     {
+        id: 2,
         nombre: "Cuevas De Mantetzulel",
         ubicacion: "Aquismón, SLP.",
         imagen: "",
         link: "/destinos/cuevas-mantetzulel"
     },
     {
+        id: 3,
         nombre: "Jardín Edward James",
         ubicacion: "Xilitla, SLP.",
         imagen: "",
         link: "/destinos/jardin-edward-james"
     },
     {
+        id: 4,
         nombre: "Cascada Salto Del Agua",
         ubicacion: "El Naranjo, SLP.",
         imagen: "",
         link: "/destinos/cascada-salto-del-agua"
     },
     {
+        id: 5,
         nombre: "Cuevas De Mantetzulel",
         ubicacion: "Aquismón, SLP.",
         imagen: "",
         link: "/destinos/cuevas-mantetzulel"
     },
     {
+        id: 6,
         nombre: "Jardín Edward James",
         ubicacion: "Xilitla, SLP.",
         imagen: "",
         link: "/destinos/jardin-edward-james"
     },
     {
+        id: 7,
         nombre: "Cascada Salto Del Agua",
         ubicacion: "El Naranjo, SLP.",
         imagen: "",
         link: "/destinos/cascada-salto-del-agua"
     },
     {
+        id: 8,
         nombre: "Cuevas De Mantetzulel",
         ubicacion: "Aquismón, SLP.",
         imagen: "",
         link: "/destinos/cuevas-mantetzulel"
     },
     {
+        id: 9,
         nombre: "Jardín Edward James",
         ubicacion: "Xilitla, SLP.",
         imagen: "",
         link: "/destinos/jardin-edward-james"
     },
     {
+        id: 10,
         nombre: "Jardín Edward James",
         ubicacion: "Xilitla, SLP.",
         imagen: "",
         link: "/destinos/jardin-edward-james"
     },
     {
+        id: 11,
         nombre: "Aynose",
         ubicacion: "Aja",
         imagen: "",
         link: "/destinos/jardin-edward-james"
     }
 ];
-
-
 
 const Destinos = () => {
     return (
@@ -103,7 +110,7 @@ function Catalago() {
                 {/* Contenedor de tarjetas con diseño responsivo */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 w-auto">
                     {catalago.map((destino, index) => (
-                        <Link key={index} to={destino.link} className="flex flex-col items-center border rounded-lg shadow-lg p-3 hover:scale-105 transition w-auto">
+                        <Link key={index} to={`/descripcion-destino/${destino.id}`} className="flex flex-col items-center border rounded-lg shadow-lg p-3 hover:scale-105 transition w-auto">
                             <img src={destino.imagen} alt={destino.nombre} className="w-full h-48 object-cover rounded-lg" />
                             <h3 className="text-[#409223] font-bold mt-2 text-center">{destino.nombre}</h3>
                             <p className="text-gray-500 text-sm text-center">{destino.ubicacion}</p>
