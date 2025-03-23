@@ -20,7 +20,7 @@ const destinos = [
     },
     {
         nombre: "Paseo En Lancha",
-        imagen: "L.jpg",
+        imagen: "Lancha.jpg",
         descripcion: "Un destino desconocido pero fascinante en la Huasteca.",
     }
 ];
