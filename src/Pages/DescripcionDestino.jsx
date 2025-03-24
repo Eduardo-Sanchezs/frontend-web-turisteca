@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import Aynose from "./Aynose";
+import Actividades from '../Components/Actividades';
+
 
 const images = [
   "/BackGround.jpg",
@@ -66,7 +67,7 @@ const DescripcionDestino = () => {
       </div>
 
 
-      <Aynose />
+      <Actividades />
 
       {/* Lista de Hoteles */}
       <ListaHoteles expandido={expandido} setExpandido={setExpandido} />

@@ -8,7 +8,7 @@ import Destinos from './Pages/Destinos';
 import DescripcionDestino from './Pages/DescripcionDestino';
 import DescripcionHotel from './Pages/DescripcionHotel';
 import RickAndMorthy from './Pages/RickAndMorthy';
-import Aynose from './Pages/Aynose';
+import Actividades from './Components/Actividades';
 
 function App() {
   return (
@@ -22,7 +22,7 @@ function App() {
         <Route path='/descripcion-destino' element={<DescripcionDestino />} />
         <Route path='/descripcion-hotel' element={<DescripcionHotel />} />
         <Route path='/rick-and-morty' element={<RickAndMorthy />} />
-        <Route path='/aynose' element={<Aynose />} />
+        <Route path='/aynose' element={<Actividades />} />
 
       </Routes>
       <Footer />
