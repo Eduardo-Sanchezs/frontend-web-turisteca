@@ -5,37 +5,54 @@ const Actividad = [
     {
         nombre: "Clavados",
         imagen: "ElSalto.jpg",
-        descripcion: "Siente la adrenalina saltando desde las rocas hacia las pozas de aguas cristalinas de la cascada. ¡Una experiencia refrescante e inolvidable!",
+        descripcion:
+            "Siente la adrenalina saltando desde las rocas hacia las pozas de aguas cristalinas de la cascada. ¡Una experiencia refrescante e inolvidable!",
     },
     {
         nombre: "Pesca",
         imagen: "Pesca.jpg",
-        descripcion: "Disfruta de la tranquilidad pescando en las aguas del río que alimenta la cascada. Un lugar perfecto para relajarse y conectar con la naturaleza.",
+        descripcion:
+            "Disfruta de la tranquilidad pescando en las aguas del río que alimenta la cascada. Un lugar perfecto para relajarse y conectar con la naturaleza.",
     },
     {
         nombre: "Buceo",
         imagen: "Buceo.jpg",
-        descripcion: "Explora las profundidades de las pozas de la cascada y descubre la vida acuática que habita en sus aguas cristalinas. ¡Una aventura submarina única!",
+        descripcion:
+            "Explora las profundidades de las pozas de la cascada y descubre la vida acuática que habita en sus aguas cristalinas. ¡Una aventura submarina única!",
     },
     {
         nombre: "Paseo En Lancha",
         imagen: "Lancha.jpg",
-        descripcion: "Navega por el río y admira la majestuosidad de la Cascada El Salto desde una perspectiva diferente. Un paseo relajante rodeado de exuberante vegetación.",
-    }
+        descripcion:
+            "Navega por el río y admira la majestuosidad de la Cascada El Salto desde una perspectiva diferente. Un paseo relajante rodeado de exuberante vegetación.",
+    },
 ];
 
 function Actividades() {
     const [open, setOpen] = useState(false);
     const [selectedActividad, setSelectedActividad] = useState(null);
+    const [closing, setClosing] = useState(false);
+    const [animateIn, setAnimateIn] = useState(false);
 
     const handleOpen = (actividad) => {
         setSelectedActividad(actividad);
         setOpen(true);
+        setClosing(false);
+        // Pequeño delay para activar la animación de entrada
+        setTimeout(() => {
+            setAnimateIn(true);
+        }, 10);
     };
 
     const handleClose = () => {
-        setOpen(false);
-        setSelectedActividad(null);
+        setClosing(true);
+        setAnimateIn(false);
+        // Espera 300ms (duración de la animación) antes de desmontar el modal
+        setTimeout(() => {
+            setOpen(false);
+            setSelectedActividad(null);
+            setClosing(false);
+        }, 300);
     };
 
     return (
@@ -48,33 +65,55 @@ function Actividades() {
                 {/* Contenedor de tarjetas */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 max-w-screen-lg w-full">
                     {Actividad.map((actividad, index) => (
-                        <div key={index}
+                        <div
+                            key={index}
                             className="flex flex-col items-center border rounded-lg shadow-md p-3 hover:scale-105 transition w-full cursor-pointer"
-                            onClick={() => handleOpen(actividad)}>
-                            <img src={actividad.imagen} alt={actividad.nombre} className="w-full h-40 object-cover rounded-lg" />
-                            <h3 className="text-[#409223] font-semibold mt-2 text-center">{actividad.nombre}</h3>
+                            onClick={() => handleOpen(actividad)}
+                        >
+                            <img
+                                src={actividad.imagen}
+                                alt={actividad.nombre}
+                                className="w-full h-40 object-cover rounded-lg"
+                            />
+                            <h3 className="text-[#409223] font-semibold mt-2 text-center">
+                                {actividad.nombre}
+                            </h3>
                         </div>
                     ))}
                 </div>
             </div>
 
-            {/* Modal Personalizado */}
-            {open && selectedActividad && (
+            {/* Modal siempre montado mientras exista una actividad seleccionada */}
+            {selectedActividad && (
                 <div className="fixed inset-0 flex items-center justify-center z-50">
-                    {/* Capa de desenfoque */}
+                    {/* Fondo borroso */}
                     <div className="absolute inset-0 backdrop-blur-md bg-white/30"></div>
 
-                    {/* Contenedor del modal (sin desenfoque) */}
-                    <div className="bg-white p-6 rounded-xl shadow-xl max-w-lg relative z-50">
+                    {/* Modal interno con animación de apertura y cierre */}
+                    <div
+                        className={`bg-white p-6 rounded-xl shadow-xl max-w-lg relative z-50 transition-all duration-300 transform ${animateIn && !closing
+                                ? "translate-y-0 opacity-100"
+                                : "translate-y-20 opacity-0"
+                            }`}
+                    >
                         {/* Botón de cierre */}
-                        <button className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 transition" onClick={handleClose}>
+                        <button
+                            className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 transition"
+                            onClick={handleClose}
+                        >
                             <X size={24} />
                         </button>
 
                         {/* Contenido del Modal */}
                         <div className="flex flex-col items-center gap-4 mt-3">
-                            <img src={selectedActividad.imagen} alt={selectedActividad.nombre} className="w-80 h-80 object-cover rounded-lg shadow-md" />
-                            <h1 className="text-[#409223] text-2xl font-bold">{selectedActividad.nombre}</h1>
+                            <img
+                                src={selectedActividad.imagen}
+                                alt={selectedActividad.nombre}
+                                className="w-80 h-80 object-cover rounded-lg shadow-md"
+                            />
+                            <h1 className="text-[#409223] text-2xl font-bold">
+                                {selectedActividad.nombre}
+                            </h1>
                             <p className="text-center">{selectedActividad.descripcion}</p>
                         </div>
                     </div>
@@ -85,3 +124,4 @@ function Actividades() {
 }
 
 export default Actividades;
+

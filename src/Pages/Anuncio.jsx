@@ -7,7 +7,9 @@ const Anuncio = () => {
                 <div className='w-full max-w-7xl flex flex-col lg:flex-row items-center justify-between space-y-6 lg:space-y-0'>
                     {/* Logo */}
                     <div className='w-full md:w-1/2 flex justify-center items-center'>
-                        <img src="/Logoo.png" alt="Logo" className='h-32 md:h-48 lg:h-56' />
+                        <div className='w-auto h-auto bg-white rounded-full'>
+                            <img src="/Logoo.png" alt="Logo" className='h-32 md:h-48 lg:h-76' />
+                        </div>
                     </div>
 
                     {/* Contenido */}
