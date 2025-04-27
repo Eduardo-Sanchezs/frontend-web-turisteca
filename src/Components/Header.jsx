@@ -7,7 +7,7 @@ function Header() {
         <div className='container mx-auto flex justify-between items-center'>
           <nav className='flex items-center space-x-2'>
             <Link to="/"><img src="Logoo.png" alt="Logo" height={60} width={60} /></Link>
-            <Link to="/"><h1 className='text-lg font-bold'>turisteca</h1></Link>
+            <Link to="/"><h1 className='text-2xl font-bold'>turisteca</h1></Link>
           </nav>
           <nav className='space-x-5 flex items-center'>
             <Link to="/conocenos">Conoce turisteca</Link>
