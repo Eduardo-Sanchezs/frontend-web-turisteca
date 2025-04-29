@@ -16,18 +16,19 @@ const Destinos = () => {
                     </div>
                 </div>
             </div>
-            <Catalago />
+            <Catalogo />
         </>
-    )
-}
+    );
+};
 
-function Catalago() {
+function Catalogo() {
     const [destinos, setDestinos] = useState([]);
-    const [loading, setLoading] = useState(true); // <-- NUEVO estado para saber si está cargando
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function fetchData() {
             try {
+                // Primero iniciar sesión
                 const loginResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/usuarios/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -41,12 +42,13 @@ function Catalago() {
 
                 if (!loginData.data || !loginData.data.accessToken) {
                     console.error('Error al iniciar sesión:', loginData);
-                    setLoading(false); // incluso si falla
+                    setLoading(false);
                     return;
                 }
 
                 const token = loginData.data.accessToken;
 
+                // Luego obtener lugares
                 const lugaresResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/lugares', {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -57,7 +59,31 @@ function Catalago() {
 
                 if (lugaresData.success) {
                     const destinosFiltrados = lugaresData.data.filter(destino => destino.idCategoria === 1 || destino.idCategoria === 4);
-                    setDestinos(destinosFiltrados);
+
+                    // Ahora por cada destino, buscar su imagen
+                    const destinosConImagen = await Promise.all(destinosFiltrados.map(async (destino) => {
+                        try {
+                            const imagenResponse = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/imagen-url/${destino.idImagen}`, {
+                                headers: {
+                                    Authorization: `Bearer ${token}`
+                                }
+                            });
+                            const imagenData = await imagenResponse.json();
+                            return {
+                                ...destino,
+                                imagenURL: imagenData.data?.imagenURL || "/BackGround.jpg" // usa backup si falla
+                            };
+                        } catch (error) {
+                            console.error(`Error obteniendo imagen para destino ${destino.nombre}:`, error);
+                            return {
+                                ...destino,
+                                imagenURL: "/BackGround.jpg"
+                            };
+                        }
+                    }));
+
+                    setDestinos(destinosConImagen);
+
                 } else {
                     console.error('Error al obtener lugares:', lugaresData);
                 }
@@ -65,7 +91,7 @@ function Catalago() {
             } catch (err) {
                 console.error('Error general:', err);
             } finally {
-                setLoading(false); // se quite el loading pase lo que pase
+                setLoading(false);
             }
         }
 
@@ -86,11 +112,14 @@ function Catalago() {
             <div className="w-full flex flex-col items-center mt-15 px-4">
                 <h2 className="text-[#409223] text-2xl md:text-3xl font-bold mb-5 text-center">Destinos Más Famosos:</h2>
 
-                {/* Contenedor de tarjetas */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 w-auto">
                     {destinos.map((destino) => (
                         <Link key={destino.id} to={`/descripcion-destino/${destino.id}`} className="flex flex-col items-center border rounded-lg shadow-lg p-3 hover:scale-105 transition w-auto">
-                            <img src="/BackGround.jpg" alt={destino.nombre} className="w-full h-48 object-cover rounded-lg" />
+                            <img
+                                src={destino.imagenURL}
+                                alt={destino.nombre}
+                                className="w-full h-48 object-cover rounded-lg"
+                            />
                             <h3 className="text-[#409223] font-bold mt-2 text-center">{destino.nombre}</h3>
                             <p className="text-gray-500 text-sm text-center">{destino.descripcion}</p>
                         </Link>

@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import Actividades from '../Components/Actividades'; // Esto también lo vamos a mejorar luego
+import Actividades from '../Components/Actividades';
 
 const DescripcionDestino = () => {
   const { id } = useParams();
   const [destino, setDestino] = useState(null);
-  const [hoteles, setHoteles] = useState([]);
-  const [imagenes, setImagenes] = useState([]);
+  const [imagenDestino, setImagenDestino] = useState(null);
+  const [lugaresFiltrados, setLugaresFiltrados] = useState([]);
+  const [imagenesCarrusel, setImagenesCarrusel] = useState([]);
   const [expandido, setExpandido] = useState(false);
+  const [cargandoLugares, setCargandoLugares] = useState(true);
 
   useEffect(() => {
     async function fetchDatos() {
@@ -24,26 +26,56 @@ const DescripcionDestino = () => {
         const loginData = await loginResponse.json();
         const token = loginData.data.accessToken;
 
-        // Traer destino
+        // Obtener datos del destino
         const destinoResponse = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/lugares/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         const destinoData = await destinoResponse.json();
         if (destinoData.success) {
-          setDestino(destinoData.data);
-          setImagenes(destinoData.data.imagenes || []); // Si el destino tiene imagenes
+          const lugar = destinoData.data;
+          setDestino(lugar);
+
+          // Cargar imagen principal del destino
+          const imagenResponse = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/imagen-url/${lugar.idImagen}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          const imagenData = await imagenResponse.json();
+          if (imagenData.success) {
+            setImagenDestino(imagenData.data.imagenURL);
+          }
         }
 
-        // Traer hoteles relacionados
-        const hotelesResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/hoteles', {
+        // Obtener lugares filtrados (hoteles y hospedaje)
+        const lugaresResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/lugares', {
           headers: { Authorization: `Bearer ${token}` }
         });
-        const hotelesData = await hotelesResponse.json();
-        if (hotelesData.success) {
-          setHoteles(hotelesData.data.filter(hotel => hotel.lugarId == id)); // Hoteles del mismo destino
+        const lugaresData = await lugaresResponse.json();
+        if (lugaresData.success) {
+          const filtrados = lugaresData.data.filter(lugar => lugar.idCategoria === 2 || lugar.idCategoria === 3);
+
+          // Obtener las imágenes para cada hotel
+          const lugaresConImagenes = await Promise.all(filtrados.map(async (lugar) => {
+            const imagenRes = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/imagen-url/${lugar.idImagen}`, {
+              headers: { Authorization: `Bearer ${token}` }
+            });
+            const imagenData = await imagenRes.json();
+            return { ...lugar, imagenPrincipal: imagenData.success ? imagenData.data.imagenURL : "/BackGround.jpg" };
+          }));
+
+          setLugaresFiltrados(lugaresConImagenes);
         }
+
+        // Crear imágenes para el carrusel (puedes usar imagen principal varias veces por ahora)
+        setImagenesCarrusel([
+          "/BackGround.jpg",
+          "/Huasteca_1.jpg",
+          "/Huasteca_2.jpg",
+          "/Huasteca_3.jpg"
+        ]);
       } catch (error) {
         console.error(error);
+      } finally {
+        setCargandoLugares(false);
       }
     }
 
@@ -53,7 +85,7 @@ const DescripcionDestino = () => {
   if (!destino) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <p className="text-2xl text-[#409223]">Cargando destino...</p>
+        <p className="text-2xl text-[#409223] animate-pulse">Cargando destino...</p>
       </div>
     );
   }
@@ -61,7 +93,7 @@ const DescripcionDestino = () => {
   return (
     <>
       {/* Fondo del Destino */}
-      <div className="h-screen bg-cover bg-center" style={{ backgroundImage: `url(${destino.imagenPrincipal || '/Huasteca_2.jpg'})` }}>
+      <div className="h-screen bg-cover bg-center" style={{ backgroundImage: `url(${imagenDestino || '/Huasteca_2.jpg'})` }}>
         <div className="flex flex-row w-auto h-screen justify-center items-center">
           <div className="flex flex-col w-300 h-auto min-h-lg justify-center items-center rounded-3xl" style={{ backgroundColor: "rgba(255, 255, 255, 0.7)" }}>
             <br />
@@ -80,7 +112,7 @@ const DescripcionDestino = () => {
       </div>
 
       {/* Carrusel de Imágenes */}
-      <ImageSlider images={imagenes.length > 0 ? imagenes : ["/BackGround.jpg", "Huasteca_1.jpg"]} />
+      <ImageSlider images={imagenesCarrusel} />
 
       {/* Mapa */}
       <div className="w-full flex justify-center mt-10 px-4">
@@ -101,8 +133,14 @@ const DescripcionDestino = () => {
       {/* Actividades */}
       <Actividades idLugar={id} />
 
-      {/* Hoteles */}
-      <ListaHoteles hoteles={hoteles} expandido={expandido} setExpandido={setExpandido} />
+      {/* Lugares Recomendados */}
+      {cargandoLugares ? (
+        <div className="flex justify-center items-center mt-10">
+          <p className="text-xl text-[#409223] animate-pulse">Cargando hoteles recomendados...</p>
+        </div>
+      ) : (
+        <ListaLugares lugares={lugaresFiltrados} expandido={expandido} setExpandido={setExpandido} />
+      )}
 
       {/* Reseñas */}
       <SeccionResenas />
@@ -110,23 +148,23 @@ const DescripcionDestino = () => {
   );
 };
 
-const ListaHoteles = ({ hoteles, expandido, setExpandido }) => {
+const ListaLugares = ({ lugares, expandido, setExpandido }) => {
   const navigate = useNavigate();
-  const hotelesMostrados = expandido ? hoteles : hoteles.slice(0, 3);
+  const lugaresMostrados = expandido ? lugares : lugares.slice(0, 3);
 
   return (
     <div className="w-full flex flex-col items-center mt-25 px-4">
-      <h2 className="text-[#409223] text-2xl md:text-3xl font-bold mb-5 text-center">Hoteles En La Zona:</h2>
+      <h2 className="text-[#409223] text-2xl md:text-3xl font-bold mb-5 text-center">Hoteles Recomendados:</h2>
       <div className="max-w-screen-lg w-full mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 transition-all duration-500">
-        {hotelesMostrados.map((hotel) => (
+        {lugaresMostrados.map((lugar) => (
           <div
-            key={hotel.id}
+            key={lugar.id}
             className="flex flex-col items-center border rounded-lg shadow-lg p-3 hover:scale-105 transition cursor-pointer"
-            onClick={() => navigate(`/descripcion-hotel/${hotel.id}`)}
+            onClick={() => navigate(`/descripcion-destino/${lugar.id}`)}
           >
-            <img src={hotel.imagen || "/Hotel_1.jpg"} alt={hotel.nombre} className="w-full h-48 object-cover rounded-lg" />
-            <h3 className="text-[#409223] font-bold mt-2 text-center">{hotel.nombre}</h3>
-            <p className="text-gray-500 text-sm text-center">{hotel.ubicacion}</p>
+            <img src={lugar.imagenPrincipal} alt={lugar.nombre} className="w-full h-48 object-cover rounded-lg" />
+            <h3 className="text-[#409223] font-bold mt-2 text-center">{lugar.nombre}</h3>
+            <p className="text-gray-500 text-sm text-center">{lugar.descripcion}</p>
           </div>
         ))}
       </div>
@@ -191,7 +229,6 @@ const SeccionResenas = () => (
   <div className="w-full flex justify-center mt-10 px-4">
     <div className="max-w-screen-lg w-full">
       <h1 className="text-[#409223] text-4xl md:text-3xl font-bold mt-5 text-center">Reseñas de Usuarios:</h1>
-      {/* A futuro, traer reseñas desde API */}
       <div className="max-w-screen-lg w-full flex flex-row justify-center items-center space-x-3 mt-4">
         <div className="w-1/3 border-2 border-gray-500 rounded-2xl">
           <div className="flex justify-center items-center">
