@@ -1,64 +1,77 @@
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-const Pruebas = () => {
-    const { id } = useParams(); // Captura el ID de la URL
-    const [destino, setDestino] = useState(null);
+function App() {
+    const [lugares, setLugares] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        async function fetchDestino() {
+        const loginYObtenerLugares = async () => {
             try {
-                // Primero inicia sesión para obtener el token
-                const loginResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/usuarios/login', {
+                // 1. Login automático
+                const loginResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/auth/login', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        username: 'juanperez',
-                        password: 'contrasena'
-                    })
-                });
-
-                const loginData = await loginResponse.json();
-                const token = loginData.data.accessToken;
-
-                // Ahora busca los detalles del destino
-                const response = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/lugares/${id}`, {
                     headers: {
-                        Authorization: `Bearer ${token}`
-                    }
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        correo: "admin@gmail.com", // Usuario de Postman
+                        password: "123456",        // Contraseña de Postman
+                    }),
                 });
 
-                const data = await response.json();
-                if (data.success) {
-                    setDestino(data.data);
-                } else {
-                    console.error("Error obteniendo el destino:", data);
+                if (!loginResponse.ok) {
+                    throw new Error("Error en login");
                 }
 
+                const loginData = await loginResponse.json();
+                const token = loginData.token;
+
+                // 2. Obtener lugares usando el token
+                const lugaresResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/lugares', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (!lugaresResponse.ok) {
+                    throw new Error("Error al obtener lugares");
+                }
+
+                const lugaresData = await lugaresResponse.json();
+
+                // 3. Filtrar lugares (solo idCategoria 1 y 4)
+                const lugaresFiltrados = lugaresData.lugares.filter(
+                    lugar => lugar.idCategoria === 1 || lugar.idCategoria === 4
+                );
+
+                setLugares(lugaresFiltrados);
+                setLoading(false);
             } catch (error) {
-                console.error("Error:", error);
+                console.error(error);
+                setLoading(false);
             }
-        }
+        };
 
-        fetchDestino();
-    }, [id]);
+        loginYObtenerLugares();
+    }, []);
 
-    if (!destino) {
-        return (
-            <div className="flex flex-col items-center justify-center h-screen">
-                <p className="text-2xl text-[#409223]">Cargando destino...</p>
-            </div>
-        );
+    if (loading) {
+        return <div className="flex items-center justify-center min-h-screen text-2xl">Cargando...</div>;
     }
 
     return (
-        <div className="p-5">
-            <h1 className="text-4xl font-bold text-[#409223] mb-4">{destino.nombre}</h1>
-            <img src="/BackGround.jpg" alt={destino.nombre} className="w-full max-h-96 object-cover rounded-xl mb-4" />
-            <p className="text-lg">{destino.descripcion}</p>
-            {/* Puedes agregar más datos si la API regresa más campos */}
+        <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {lugares.map((lugar) => (
+                <div key={lugar.id} className="bg-white rounded-2xl shadow-md overflow-hidden">
+                    <img src={lugar.img} alt={lugar.nombre} className="w-full h-48 object-cover" />
+                    <div className="p-4">
+                        <h2 className="text-xl font-semibold">{lugar.nombre}</h2>
+                        <p className="text-gray-600">{lugar.descripcion}</p>
+                    </div>
+                </div>
+            ))}
         </div>
     );
-};
+}
 
-export default Pruebas;
+export default App;

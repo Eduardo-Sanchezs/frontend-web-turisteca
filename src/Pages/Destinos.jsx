@@ -56,7 +56,8 @@ function Catalago() {
                 const lugaresData = await lugaresResponse.json();
 
                 if (lugaresData.success) {
-                    setDestinos(lugaresData.data);
+                    const destinosFiltrados = lugaresData.data.filter(destino => destino.idCategoria === 1 || destino.idCategoria === 4);
+                    setDestinos(destinosFiltrados);
                 } else {
                     console.error('Error al obtener lugares:', lugaresData);
                 }

@@ -1,15 +1,49 @@
 import { useState } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
 
+const API_KEY = "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";
+
 export default function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-    const handleSendMessage = () => {
-        if (message.trim() !== "") {
-            setMessages([...messages, message]);
-            setMessage("");
+    const handleSendMessage = async () => {
+        if (message.trim() === "") return;
+
+        const userMessage = { sender: "user", text: message };
+        setMessages(prev => [...prev, userMessage]);
+        setMessage("");
+        setLoading(true);
+
+        try {
+            const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${API_KEY}`,
+                },
+                body: JSON.stringify({
+                    model: "openai/gpt-3.5-turbo", // O puedes cambiar a otro modelo disponible en OpenRouter
+                    messages: [
+                        { role: "system", content: "Eres un asistente amigable llamado turisteca-bot, tienes que devolver solo respuestas con enfoque ecologico sobre la region huasteca en México asi como recomendaciones que te pida el usuario sobre actividades, hospedajes y destinos turistucos. Cualquier otra cosa que te pregunten que no sea sobre la huasteca o sobre ecoturismo, no respondas" },
+                        { role: "user", content: message },
+                    ],
+                }),
+            });
+
+            const data = await response.json();
+            const botReply = data.choices?.[0]?.message?.content || "No entendí, ¿puedes repetirlo?";
+            const botMessage = { sender: "bot", text: botReply };
+
+            setMessages(prev => [...prev, botMessage]);
+        } catch (error) {
+            console.error("Error llamando a OpenRouter:", error);
+            const errorMessage = { sender: "bot", text: "Error obteniendo respuesta. Intenta de nuevo." };
+            setMessages(prev => [...prev, errorMessage]);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -19,7 +53,7 @@ export default function Chatbot() {
                 <div className="w-80 shadow-xl rounded-2xl overflow-hidden bg-white border border-gray-200">
                     <div className="p-4 h-96 flex flex-col">
                         <div className="flex justify-between items-center border-b border-gray-300 pb-2 mb-2">
-                            <h2 className="text-lg font-semibold text-[#409223]">turisteca-bot</h2>
+                            <h2 className="text-lg font-semibold text-[#409223]">turiBot🤖</h2>
                             <button
                                 className="p-2 rounded-full hover:bg-[#9DC68E] text-gray-400"
                                 onClick={() => setIsOpen(false)}
@@ -27,12 +61,23 @@ export default function Chatbot() {
                                 <X className="w-5 h-5" />
                             </button>
                         </div>
-                        <div className="flex-1 overflow-y-auto bg-gray-100 p-2 rounded-md">
+                        <div className="flex-1 overflow-y-auto bg-gray-100 p-2 rounded-md space-y-2">
                             {messages.map((msg, index) => (
-                                <div key={index} className="bg-[#409223] text-white p-2 rounded-lg mb-1 self-end max-w-xs">
-                                    {msg}
+                                <div
+                                    key={index}
+                                    className={`p-2 rounded-lg max-w-xs ${msg.sender === "user"
+                                        ? "bg-[#409223] text-white self-end ml-auto"
+                                        : "bg-[#9DC68E] text-black self-start mr-auto"
+                                        }`}
+                                >
+                                    {msg.text}
                                 </div>
                             ))}
+                            {loading && (
+                                <div className="bg-[#9DC68E] text-black p-2 rounded-lg max-w-xs self-start mr-auto animate-pulse">
+                                    Escribiendo...
+                                </div>
+                            )}
                         </div>
                         <div className="mt-2 flex items-center border border-[#9DC68E] rounded-md p-2">
                             <input
@@ -41,10 +86,13 @@ export default function Chatbot() {
                                 className="flex-1 outline-none"
                                 value={message}
                                 onChange={(e) => setMessage(e.target.value)}
+                                onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+                                disabled={loading}
                             />
                             <button
-                                className="ml-2 p-2 bg-[#409223] text-white rounded-full hover:bg-[#9DC68E]"
+                                className="ml-2 p-2 bg-[#409223] text-white rounded-full hover:bg-[#9DC68E] disabled:opacity-50"
                                 onClick={handleSendMessage}
+                                disabled={loading}
                             >
                                 <Send className="w-5 h-5" />
                             </button>
