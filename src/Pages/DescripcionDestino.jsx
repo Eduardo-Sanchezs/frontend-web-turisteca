@@ -142,7 +142,7 @@ const DescripcionDestino = () => {
       </div>
 
       {/* Actividades */}
-      <Actividades idLugar={id} />
+
 
       {/* Lugares Recomendados */}
       {cargandoLugares ? (
