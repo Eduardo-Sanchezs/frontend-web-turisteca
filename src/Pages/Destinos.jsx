@@ -23,6 +23,7 @@ const Destinos = () => {
 
 function Catalogo() {
     const [destinos, setDestinos] = useState([]);
+    const [ciudades, setCiudades] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -47,6 +48,18 @@ function Catalogo() {
                 }
 
                 const token = loginData.data.accessToken;
+
+                // Obtener ciudades
+                const ciudadesResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/ciudades', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+
+                const ciudadesData = await ciudadesResponse.json();
+                if (ciudadesData.success) {
+                    setCiudades(ciudadesData.data); // Guardamos las ciudades
+                }
 
                 // Luego obtener lugares
                 const lugaresResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/lugares', {
@@ -107,6 +120,12 @@ function Catalogo() {
         );
     }
 
+    // Función para obtener el nombre de la ciudad
+    const obtenerCiudad = (idCiudad) => {
+        const ciudad = ciudades.find(c => c.id === idCiudad);
+        return ciudad ? ciudad.nombre : 'Ciudad desconocida';
+    };
+
     return (
         <>
             <div className="w-full flex flex-col items-center mt-15 px-4">
@@ -121,7 +140,7 @@ function Catalogo() {
                                 className="w-full h-48 object-cover rounded-lg"
                             />
                             <h3 className="text-[#409223] font-bold mt-2 text-center">{destino.nombre}</h3>
-                            <p className="text-gray-500 text-sm text-center">{destino.descripcion}</p>
+                            <p className="text-gray-500 text-sm text-center">{obtenerCiudad(destino.idCiudad)}</p>
                         </Link>
                     ))}
                 </div>

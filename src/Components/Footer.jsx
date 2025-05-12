@@ -1,4 +1,5 @@
 import { Facebook, Instagram } from "lucide-react";
+import logo from '../assets/Turisteca.png';
 
 function Footer() {
     return (
@@ -26,8 +27,8 @@ function Footer() {
 
                     {/* Sección de Logo y Correo Electrónico */}
                     <div className="flex flex-col items-center">
-                        <img src="Logoo.png" alt="Logo" width={60} height={60} />
-                        <p className="mt-2 text-gray-700 text-sm md:text-base">TuMeroPatron@turisteca.com</p>
+                        <img src={logo} alt="Logo" width={60} height={60} />
+                        <p className="mt-2 text-gray-700 text-sm md:text-base">turistecamx@gmail.com</p>
                     </div>
 
                     {/* Sección de Descarga de App */}

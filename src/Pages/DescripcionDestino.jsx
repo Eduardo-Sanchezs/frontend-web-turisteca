@@ -33,6 +33,7 @@ const DescripcionDestino = () => {
         const destinoData = await destinoResponse.json();
         if (destinoData.success) {
           const lugar = destinoData.data;
+          console.log("Destino:", lugar);
           setDestino(lugar);
 
           // Cargar imagen principal del destino
@@ -121,11 +122,21 @@ const DescripcionDestino = () => {
             Explora Su Ubicación:
           </h1>
           <div className="flex justify-center mt-5">
-            <img
-              className="w-45/64 rounded-lg shadow-lg"
-              src="/Maps.jpg"
-              alt="API Google Maps"
-            />
+            <div className="w-full h-96 rounded-lg shadow-lg overflow-hidden">
+              {(() => {
+                const lat = parseFloat(destino.latitud) || 21.8795; // Fallback: Ciudad Valles
+                const lng = parseFloat(destino.longitud) || -99.1013;
+                return (
+                  <iframe
+                    title="mapa-del-destino"
+                    className="w-full h-full"
+                    src={`https://maps.google.com/maps?q=${destino.coordLat},${destino.coordLon}&hl=es&z=14&output=embed`}
+                    loading="lazy"
+                    allowFullScreen
+                  ></iframe>
+                );
+              })()}
+            </div>
           </div>
         </div>
       </div>

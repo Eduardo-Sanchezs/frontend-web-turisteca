@@ -1,4 +1,6 @@
 import React from 'react'
+import logo from '../assets/Turisteca.png';
+
 
 const Conocenos = () => {
     return (
@@ -8,7 +10,7 @@ const Conocenos = () => {
                     {/* Logo */}
                     <div className='w-full md:w-1/2 flex justify-center items-center'>
                         <div className='w-auto h-auto bg-white rounded-full'>
-                            <img src="/Logoo.png" alt="Logo" className='h-32 md:h-48 lg:h-76' />
+                            <img src={logo} alt="Logo" className='h-32 md:h-48 lg:h-76' />
                         </div>
                     </div>
 
@@ -18,17 +20,17 @@ const Conocenos = () => {
                             <div className='space-y-8'>
                                 <div className='text-center'>
                                     <h1 className='text-3xl md:text-4xl font-extrabold text-[#409223]'>Misión</h1>
-                                    <p className='text-sm md:text-base'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime laboriosam officia architecto recusandae.</p>
+                                    <p className='text-sm md:text-base'>Promover el turismo sustentable en la región Huasteca mediante una plataforma digital que conecte a viajeros con destinos, servicios y actividades ecológicas, fomentando la conservación del medio ambiente y el desarrollo local responsable.</p>
                                 </div>
 
                                 <div className='text-center'>
                                     <h1 className='text-3xl md:text-4xl font-extrabold text-[#409223]'>Visión</h1>
-                                    <p className='text-sm md:text-base'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime laboriosam officia architecto recusandae.</p>
+                                    <p className='text-sm md:text-base'>Ser la aplicación líder en turismo ecológico en México, reconocida por su innovación tecnológica, compromiso ambiental y por transformar la manera en que se viaja, promoviendo experiencias sostenibles y conscientes en armonía con la naturaleza.</p>
                                 </div>
 
                                 <div className='text-center'>
                                     <h1 className='text-3xl md:text-4xl font-extrabold text-[#409223]'>Objetivo</h1>
-                                    <p className='text-sm md:text-base'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime laboriosam officia architecto recusandae.</p>
+                                    <p className='text-sm md:text-base'>Desarrollar una aplicación móvil y web que permita a los usuarios planificar viajes ecológicos en la región Huasteca, ofreciendo recomendaciones de rutas eficientes, alojamientos sostenibles, atractivos turísticos responsables y herramientas para calcular y reducir su huella de carbono.</p>
                                 </div>
                             </div>
                         </div>

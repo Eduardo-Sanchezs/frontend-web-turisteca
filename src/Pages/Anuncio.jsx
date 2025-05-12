@@ -1,4 +1,6 @@
 import React from 'react'
+import logo from '../assets/Turisteca.png';
+
 
 const Anuncio = () => {
     return (
@@ -8,7 +10,7 @@ const Anuncio = () => {
                     {/* Logo */}
                     <div className='w-full md:w-1/2 flex justify-center items-center'>
                         <div className='w-auto h-auto bg-white rounded-full'>
-                            <img src="/Logoo.png" alt="Logo" className='h-32 md:h-48 lg:h-76' />
+                            <img src={logo} alt="Logo" className='h-32 md:h-48 lg:h-76' />
                         </div>
                     </div>
 
@@ -18,8 +20,8 @@ const Anuncio = () => {
                             <div className='space-y-8'>
                                 <div className='w-full'>
                                     <h1 className='text-center text-5xl font-extrabold text-[#409223]'> ¿Ya Conoces Nuesta App? </h1>
-                                    <p className='text-center'>
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime laboriosam officia architecto recusandae, aut tempore fugit quam voluptates, excepturi veniam, nobis dolorem ea omnis sint laudantium? Asperiores modi deleniti sunt?
+                                    <p className='text-center mt-3 font-bold text-2xl'>
+                                        Descubre la Huasteca de manera sostenible. Planifica tu viaje ecológico, reduce tu huella de carbono y vive la naturaleza responsablemente con Turisteca.
                                     </p>
                                 </div>
                                 <div className='flex flex-col w-full items-center justify-center'>

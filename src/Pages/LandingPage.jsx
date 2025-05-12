@@ -1,5 +1,4 @@
-import React from 'react'
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -12,33 +11,6 @@ const images = [
     "Huasteca_5.jpg",
     "Huasteca_6.jpg",
     "Huasteca_7.jpg",
-];
-
-const destinos = [
-    {
-        nombre: "Cascada Salto Del Agua",
-        ubicacion: "El Naranjo, SLP.",
-        imagen: "ElSalto.jpg", // Agrega aquí la ruta de la imagen
-        link: "/destinos/cascada-salto-del-agua"
-    },
-    {
-        nombre: "Cuevas De Mantetzulel",
-        ubicacion: "Aquismón, SLP.",
-        imagen: "Mantetzulel.jpg", // Agrega aquí la ruta de la imagen
-        link: "/destinos/cuevas-mantetzulel"
-    },
-    {
-        nombre: "Jardín Edward James",
-        ubicacion: "Xilitla, SLP.",
-        imagen: "BackGround.jpg", // Agrega aquí la ruta de la imagen
-        link: "/destinos/jardin-edward-james"
-    },
-    {
-        nombre: "Castillo De Beto Ramón",
-        ubicacion: "Axtla De Terrazas, SLP.",
-        imagen: "BetoRamon.jpg", // Agrega aquí la ruta de la imagen
-        link: "/destinos/jardin-edward-james"
-    }
 ];
 
 const LandingPage = () => {
@@ -59,7 +31,6 @@ const LandingPage = () => {
                     <div className='bg-[#409223] w-45 h-auto flex rounded-full justify-center items-center mt-3'>
                         <Link to="/Anuncio" className='text-white'> Conoce Nuestra App </Link>
                     </div>
-
                 </div>
             </div>
 
@@ -67,7 +38,7 @@ const LandingPage = () => {
             <ImageSlider />
 
             {/* Sección de Destinos Más Famosos */}
-            <Destinos />
+            <DestinosFamosos />
 
             {/* Sección Región Huasteca */}
             <div className="w-full flex flex-col items-center justify-center px-4 mt-15">
@@ -98,17 +69,18 @@ const LandingPage = () => {
                 </div>
             </div>
 
-
-            {/* Sección Región Huasteca */}
-            <div className="w-full flex flex-row justify-center mt-15">
+            {/* Sección ¿Sabías Que? */}
+            <div className="w-full flex justify-center mt-6 px-4 sm:px-8">
                 <div className="max-w-screen-lg w-full">
-                    <h1 className="text-[#409223] text-4xl text-center md:text-left">¿Sabías Que?</h1>
-                    <p className="text-justify mt-3">
+                    <h1 className="text-[#409223] text-3xl sm:text-4xl text-center sm:text-left font-semibold">
+                        ¿Sabías Que?
+                    </h1>
+                    <p className="text-justify mt-3 text-sm sm:text-base">
                         El Nombre de la región Huasteca proviene de los huastecos, una civilización prehispánica que tenía su propia lengua, el téenek, y una cultura distinta a la de los mexicas y mayas. A diferencia de otras culturas mesoamericanas, los huastecos eran conocidos por su estilo de vestimenta minimalista, ya que debido al clima cálido y húmedo de la región, solían usar muy poca ropa. Incluso los conquistadores españoles se sorprendieron al ver su forma de vestir y sus elaboradas modificaciones corporales, como el limado de dientes y los tatuajes.
                     </p>
                 </div>
             </div>
-            <div className='pt-30'></div>
+            <div className="pt-30"></div>
         </>
     );
 }
@@ -159,23 +131,101 @@ export function ImageSlider() {
 }
 
 /* Sección de Destinos Más Famosos */
-function Destinos() {
+function DestinosFamosos() {
+    const [destinos, setDestinos] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        async function fetchDestinos() {
+            try {
+                // Login
+                const loginResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/usuarios/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: 'juanperez',
+                        password: 'contrasena'
+                    })
+                });
+
+                const loginData = await loginResponse.json();
+
+                if (!loginData.data || !loginData.data.accessToken) {
+                    console.error('Error al iniciar sesión:', loginData);
+                    setLoading(false);
+                    return;
+                }
+
+                const token = loginData.data.accessToken;
+
+                // Obtener lugares
+                const lugaresResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/lugares', {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+
+                const lugaresData = await lugaresResponse.json();
+
+                if (lugaresData.success) {
+                    const destinosFiltrados = lugaresData.data.filter(destino => destino.idCategoria === 1 || destino.idCategoria === 4);
+
+                    const destinosConImagen = await Promise.all(destinosFiltrados.slice(0, 4).map(async (destino) => {
+                        try {
+                            const imagenResponse = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/imagen-url/${destino.idImagen}`, {
+                                headers: { Authorization: `Bearer ${token}` }
+                            });
+                            const imagenData = await imagenResponse.json();
+                            return {
+                                ...destino,
+                                imagenURL: imagenData.data?.imagenURL || "/BackGround.jpg"
+                            };
+                        } catch (error) {
+                            console.error(`Error obteniendo imagen para destino ${destino.nombre}:`, error);
+                            return { ...destino, imagenURL: "/BackGround.jpg" };
+                        }
+                    }));
+
+                    setDestinos(destinosConImagen);
+                } else {
+                    console.error('Error al obtener lugares:', lugaresData);
+                }
+
+            } catch (error) {
+                console.error('Error general:', error);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchDestinos();
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="w-full flex flex-col items-center justify-center py-20">
+                <div className="w-16 h-16 border-4 border-green-500 border-dashed rounded-full animate-spin"></div>
+                <p className="text-[#409223] text-xl mt-4">Cargando destinos...</p>
+            </div>
+        );
+    }
+
     return (
         <div className="w-full flex flex-col items-center mt-15 px-4">
             <h2 className="text-[#409223] text-2xl md:text-3xl font-bold mb-5 text-center">Destinos Más Famosos:</h2>
 
-            {/* Contenedor de tarjetas con diseño responsivo */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 max-w-screen-lg w-full">
-                {destinos.map((destino, index) => (
-                    <Link key={index} to={`/descripcion-destino`} className="flex flex-col items-center border rounded-lg shadow-lg p-3 hover:scale-105 transition w-full border-[#9DC68E]">
-                        <img src={destino.imagen} alt={destino.nombre} className="w-full h-48 object-cover rounded-lg" />
+                {destinos.map((destino) => (
+                    <Link
+                        key={destino.id}
+                        to={`/descripcion-destino/${destino.id}`}
+                        className="flex flex-col items-center border rounded-lg shadow-lg p-3 hover:scale-105 transition w-full border-[#9DC68E]"
+                    >
+                        <img src={destino.imagenURL} alt={destino.nombre} className="w-full h-48 object-cover rounded-lg" />
                         <h3 className="text-[#409223] font-bold mt-2 text-center">{destino.nombre}</h3>
-                        <p className="text-gray-500 text-sm text-center">{destino.ubicacion}</p>
+                        <p className="text-gray-500 text-sm text-center">{destino.descripcion}</p>
                     </Link>
                 ))}
             </div>
 
-            {/* Botón de "Mostrar Más" centrado y responsivo */}
             <Link to="/destinos" className="mt-5 px-6 py-3 bg-[#409223] text-white font-bold rounded-lg hover:bg-[#36791c] transition text-center w-full sm:w-auto">
                 Mostrar Más
             </Link>

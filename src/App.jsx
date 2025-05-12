@@ -12,7 +12,6 @@ import DescripcionHotel from './Pages/DescripcionHotel';
 
 import Chatbot from './Pages/ChatBot';
 
-import Pruebas from './Pages/Pruebas';
 
 
 function App() {
@@ -27,8 +26,6 @@ function App() {
         <Route path='/anuncio' element={<Anuncio />} />
         <Route path='/descripcion-destino/:id' element={<DescripcionDestino />} />
         <Route path='/descripcion-hotel' element={<DescripcionHotel />} />
-
-        <Route path="/pruebas" element={<Pruebas />} />
 
       </Routes>
       <Footer />
