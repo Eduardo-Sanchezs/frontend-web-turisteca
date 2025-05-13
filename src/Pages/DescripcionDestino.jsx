@@ -15,6 +15,7 @@ const DescripcionDestino = () => {
   useEffect(() => {
     async function fetchDatos() {
       try {
+        // Login para obtener token
         const loginResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/usuarios/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -36,13 +37,33 @@ const DescripcionDestino = () => {
           console.log("Destino:", lugar);
           setDestino(lugar);
 
-          // Cargar imagen principal del destino
+          // Imagen principal del destino
           const imagenResponse = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/imagen-url/${lugar.idImagen}`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           const imagenData = await imagenResponse.json();
           if (imagenData.success) {
             setImagenDestino(imagenData.data.imagenURL);
+          }
+
+          // Obtener imágenes para el carrusel
+          const imagenesLugarResponse = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/imagen-lugar/${id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          const imagenesLugarData = await imagenesLugarResponse.json();
+
+          if (imagenesLugarData.success) {
+            const imagenesURLs = await Promise.all(
+              imagenesLugarData.data.map(async ({ idImagen }) => {
+                const res = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/imagen-url/${idImagen}`, {
+                  headers: { Authorization: `Bearer ${token}` }
+                });
+                const data = await res.json();
+                return data.success ? data.data.imagenURL : null;
+              })
+            );
+            const imagenesFiltradas = imagenesURLs.filter(url => url !== null);
+            setImagenesCarrusel(imagenesFiltradas.length > 0 ? imagenesFiltradas : ["/BackGround.jpg"]);
           }
         }
 
@@ -52,27 +73,25 @@ const DescripcionDestino = () => {
         });
         const lugaresData = await lugaresResponse.json();
         if (lugaresData.success) {
-          const filtrados = lugaresData.data.filter(lugar => lugar.idCategoria === 2 || lugar.idCategoria === 3);
+          const filtrados = lugaresData.data.filter(
+            lugar =>
+              (lugar.idCategoria === 2 || lugar.idCategoria === 3) &&
+              lugar.idCiudad === destinoData.data.idCiudad
+          );
 
-          // Obtener las imágenes para cada hotel
           const lugaresConImagenes = await Promise.all(filtrados.map(async (lugar) => {
             const imagenRes = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/imagen-url/${lugar.idImagen}`, {
               headers: { Authorization: `Bearer ${token}` }
             });
             const imagenData = await imagenRes.json();
-            return { ...lugar, imagenPrincipal: imagenData.success ? imagenData.data.imagenURL : "/BackGround.jpg" };
+            return {
+              ...lugar,
+              imagenPrincipal: imagenData.success ? imagenData.data.imagenURL : "/BackGround.jpg"
+            };
           }));
 
           setLugaresFiltrados(lugaresConImagenes);
         }
-
-        // Crear imágenes para el carrusel (puedes usar imagen principal varias veces por ahora)
-        setImagenesCarrusel([
-          "/BackGround.jpg",
-          "/Huasteca_1.jpg",
-          "/Huasteca_2.jpg",
-          "/Huasteca_3.jpg"
-        ]);
       } catch (error) {
         console.error(error);
       } finally {
@@ -82,6 +101,7 @@ const DescripcionDestino = () => {
 
     fetchDatos();
   }, [id]);
+
 
   if (!destino) {
     return (
@@ -215,26 +235,43 @@ export function ImageSlider({ images }) {
   };
 
   return (
-    <div className="relative w-full md:w-2/3 lg:w-1/2 h-[300px] md:h-[400px] mx-auto overflow-hidden rounded-lg shadow-lg mt-15">
-      <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
+    <div className="relative w-full md:w-2/3 lg:w-1/2 aspect-[16/9] mx-auto overflow-hidden rounded-lg shadow-lg mt-15">
+      <div
+        className="flex transition-transform duration-500 ease-in-out h-full"
+        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+      >
         {images.map((img, index) => (
-          <img key={index} src={img} alt="slider" className="w-full flex-shrink-0 object-cover h-full" onMouseEnter={() => setIsAutoSliding(false)} onMouseLeave={() => setIsAutoSliding(true)} />
+          <div key={index} className="w-full h-full flex-shrink-0">
+            <img
+              src={img}
+              alt={`slide-${index}`}
+              className="w-full h-full object-cover"
+              onMouseEnter={() => setIsAutoSliding(false)}
+              onMouseLeave={() => setIsAutoSliding(true)}
+            />
+          </div>
         ))}
       </div>
+
       <button onClick={prevSlide} className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-[#409223] p-2 rounded-full text-white">
         <ChevronLeft />
       </button>
-      <button onClick={nextSlide} className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-[#409223]  p-2 rounded-full text-white">
+      <button onClick={nextSlide} className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-[#409223] p-2 rounded-full text-white">
         <ChevronRight />
       </button>
+
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {images.map((_, index) => (
-          <div key={index} className={`w-3 h-3 rounded-full ${currentIndex === index ? "bg-white" : "bg-gray-500"}`} />
+          <div
+            key={index}
+            className={`w-3 h-3 rounded-full ${currentIndex === index ? "bg-white" : "bg-gray-500"}`}
+          />
         ))}
       </div>
     </div>
   );
 }
+
 
 const SeccionResenas = () => (
   <div className="w-full flex justify-center mt-10 px-4">

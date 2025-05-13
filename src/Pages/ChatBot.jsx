@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
 
-const API_KEY = "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";
+const API_KEY = "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";
 
 export default function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);
