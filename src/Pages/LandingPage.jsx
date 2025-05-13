@@ -53,7 +53,8 @@ const LandingPage = () => {
                         <p className="text-center md:text-left">
                             Está situada al noreste de Mesoamérica, culturalmente pertenece a la subárea Costa del Golfo, abarcando parcialmente seis estados de la república mexicana:
                         </p>
-                        <ul className="list-disc pl-10 mt-2 text-center md:text-left">
+
+                        <ul className="list-disc list-inside text-center md:text-left mt-2">
                             <li>Hidalgo</li>
                             <li>Puebla</li>
                             <li>Querétaro</li>
@@ -69,11 +70,12 @@ const LandingPage = () => {
                 </div>
             </div>
 
+
             {/* Sección ¿Sabías Que? */}
             <div className="w-full flex justify-center mt-6 px-4 sm:px-8">
                 <div className="max-w-screen-lg w-full">
                     <h1 className="text-[#409223] text-3xl sm:text-4xl text-center sm:text-left font-semibold">
-                        ¿Sabías Que?
+                        ¿Sabías qué?
                     </h1>
                     <p className="text-justify mt-3 text-sm sm:text-base">
                         El Nombre de la región Huasteca proviene de los huastecos, una civilización prehispánica que tenía su propia lengua, el téenek, y una cultura distinta a la de los mexicas y mayas. A diferencia de otras culturas mesoamericanas, los huastecos eran conocidos por su estilo de vestimenta minimalista, ya que debido al clima cálido y húmedo de la región, solían usar muy poca ropa. Incluso los conquistadores españoles se sorprendieron al ver su forma de vestir y sus elaboradas modificaciones corporales, como el limado de dientes y los tatuajes.
@@ -109,26 +111,43 @@ export function ImageSlider() {
     };
 
     return (
-        <div className="relative w-full md:w-2/3 lg:w-1/2 h-[300px] md:h-[400px] mx-auto overflow-hidden rounded-lg shadow-lg mt-15">
-            <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
+        <div className="relative w-full md:w-2/3 lg:w-1/2 aspect-[16/9] mx-auto overflow-hidden rounded-lg shadow-lg mt-15">
+            <div
+                className="flex transition-transform duration-500 ease-in-out h-full"
+                style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+            >
                 {images.map((img, index) => (
-                    <img key={index} src={img} alt="slider" className="w-full flex-shrink-0 object-cover h-full" onMouseEnter={() => setIsAutoSliding(false)} onMouseLeave={() => setIsAutoSliding(true)} />
+                    <div key={index} className="w-full h-full flex-shrink-0">
+                        <img
+                            src={img}
+                            alt={`slide-${index}`}
+                            className="w-full h-full object-cover"
+                            onMouseEnter={() => setIsAutoSliding(false)}
+                            onMouseLeave={() => setIsAutoSliding(true)}
+                        />
+                    </div>
                 ))}
             </div>
+
             <button onClick={prevSlide} className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-[#409223] p-2 rounded-full text-white">
                 <ChevronLeft />
             </button>
-            <button onClick={nextSlide} className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-[#409223]  p-2 rounded-full text-white">
+            <button onClick={nextSlide} className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-[#409223] p-2 rounded-full text-white">
                 <ChevronRight />
             </button>
+
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
                 {images.map((_, index) => (
-                    <div key={index} className={`w-3 h-3 rounded-full ${currentIndex === index ? "bg-white" : "bg-gray-500"}`} />
+                    <div
+                        key={index}
+                        className={`w-3 h-3 rounded-full ${currentIndex === index ? "bg-white" : "bg-gray-500"}`}
+                    />
                 ))}
             </div>
         </div>
     );
 }
+
 
 /* Sección de Destinos Más Famosos */
 function DestinosFamosos() {
@@ -210,7 +229,7 @@ function DestinosFamosos() {
 
     return (
         <div className="w-full flex flex-col items-center mt-15 px-4">
-            <h2 className="text-[#409223] text-2xl md:text-3xl font-bold mb-5 text-center">Destinos Más Famosos:</h2>
+            <h2 className="text-[#409223] text-2xl md:text-3xl font-bold mb-5 text-center">Destinos más famosos:</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 max-w-screen-lg w-full">
                 {destinos.map((destino) => (
@@ -227,7 +246,7 @@ function DestinosFamosos() {
             </div>
 
             <Link to="/destinos" className="mt-5 px-6 py-3 bg-[#409223] text-white font-bold rounded-lg hover:bg-[#36791c] transition text-center w-full sm:w-auto">
-                Mostrar Más
+                Mostrar más
             </Link>
         </div>
     );

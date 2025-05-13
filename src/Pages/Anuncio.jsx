@@ -19,7 +19,7 @@ const Anuncio = () => {
                         <div className='w-full max-w-lg bg-white bg-opacity-70 p-6 rounded-2xl shadow-lg'>
                             <div className='space-y-8'>
                                 <div className='w-full'>
-                                    <h1 className='text-center text-5xl font-extrabold text-[#409223]'> ¿Ya Conoces Nuesta App? </h1>
+                                    <h1 className='text-center text-5xl font-extrabold text-[#409223]'> ¿Ya conoces nuestra app? </h1>
                                     <p className='text-center mt-3 font-bold text-2xl'>
                                         Descubre la Huasteca de manera sostenible. Planifica tu viaje ecológico, reduce tu huella de carbono y vive la naturaleza responsablemente con Turisteca.
                                     </p>

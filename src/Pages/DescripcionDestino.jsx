@@ -119,7 +119,7 @@ const DescripcionDestino = () => {
       <div className="w-full flex justify-center mt-10 px-4">
         <div className="max-w-screen-lg w-full">
           <h1 className="text-[#409223] text-4xl md:text-3xl font-bold mt-5 text-center">
-            Explora Su Ubicación:
+            Explora su ubicación:
           </h1>
           <div className="flex justify-center mt-5">
             <div className="w-full h-96 rounded-lg shadow-lg overflow-hidden">
@@ -165,7 +165,7 @@ const ListaLugares = ({ lugares, expandido, setExpandido }) => {
 
   return (
     <div className="w-full flex flex-col items-center mt-25 px-4">
-      <h2 className="text-[#409223] text-2xl md:text-3xl font-bold mb-5 text-center">Hoteles Recomendados:</h2>
+      <h2 className="text-[#409223] text-2xl md:text-3xl font-bold mb-5 text-center">Hoteles recomendados:</h2>
       <div className="max-w-screen-lg w-full mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 transition-all duration-500">
         {lugaresMostrados.map((lugar) => (
           <div
@@ -239,27 +239,27 @@ export function ImageSlider({ images }) {
 const SeccionResenas = () => (
   <div className="w-full flex justify-center mt-10 px-4">
     <div className="max-w-screen-lg w-full">
-      <h1 className="text-[#409223] text-4xl md:text-3xl font-bold mt-5 text-center">Reseñas de Usuarios:</h1>
+      <h1 className="text-[#409223] text-4xl md:text-3xl font-bold mt-5 text-center">Reseñas de usuarios:</h1>
       <div className="max-w-screen-lg w-full flex flex-row justify-center items-center space-x-3 mt-4">
         <div className="w-1/3 border-2 border-gray-500 rounded-2xl">
           <div className="flex justify-center items-center">
             <img className="w-20 h-12" src="/Usuario.png" alt="Foto De Usuario" />
           </div>
-          <h1 className="font-bold text-center">Usuario 1</h1>
+          <h1 className="font-bold text-center">Marilu Martinez</h1>
           <p className="text-center">Increíble experiencia.</p>
         </div>
         <div className="w-1/3 border-2 border-gray-500 rounded-2xl">
           <div className="flex justify-center items-center">
             <img className="w-20 h-12" src="/Usuario.png" alt="Foto De Usuario" />
           </div>
-          <h1 className="font-bold text-center">Usuario 2</h1>
+          <h1 className="font-bold text-center">Karla Mendoza</h1>
           <p className="text-center">Hermosos paisajes.</p>
         </div>
         <div className="w-1/3 border-2 border-gray-500 rounded-2xl">
           <div className="flex justify-center items-center">
             <img className="w-20 h-12" src="/Usuario.png" alt="Foto De Usuario" />
           </div>
-          <h1 className="font-bold text-center">Usuario 3</h1>
+          <h1 className="font-bold text-center">Roberto Almazan</h1>
           <p className="text-center">Muy recomendable.</p>
         </div>
       </div>
