@@ -29,13 +29,25 @@ const LandingPage = () => {
                     </p>
 
                     <div className='bg-[#409223] w-45 h-auto flex rounded-full justify-center items-center mt-3'>
-                        <Link to="/Anuncio" className='text-white'> Conoce Nuestra App </Link>
+                        <Link to="/Anuncio" className='text-white'> Conoce nuestra app </Link>
                     </div>
                 </div>
             </div>
 
             {/* Slider de Imágenes */}
             <ImageSlider />
+
+            {/* Sección Turismo Responsabkle */}
+            <div className="w-full flex justify-center mt-10 px-4 sm:px-8">
+                <div className="max-w-screen-lg w-full">
+                    <h1 className="text-[#409223] text-3xl sm:text-4xl text-center sm:text-left font-semibold">
+                        Turismo responsable
+                    </h1>
+                    <p className="text-justify mt-3 text-sm sm:text-base">
+                        El turismo responsable implica reconocer y actuar sobre el impacto ambiental que generan nuestras decisiones al viajar, especialmente en lo que respecta a la emisión de gases de efecto invernadero. La reducción de la huella de carbono se ha convertido en una prioridad global, y en el contexto del turismo, esto significa elegir medios de transporte más eficientes, planificar rutas sostenibles y preferir alojamientos y servicios comprometidos con el medio ambiente. En Turisteca, fomentamos una cultura de viaje consciente que no solo enriquece al visitante, sino que protege el equilibrio ecológico de la región Huasteca, asegurando su preservación para las futuras generaciones.
+                    </p>
+                </div>
+            </div>
 
             {/* Sección de Destinos Más Famosos */}
             <DestinosFamosos />
@@ -229,7 +241,7 @@ function DestinosFamosos() {
 
     return (
         <div className="w-full flex flex-col items-center mt-15 px-4">
-            <h2 className="text-[#409223] text-2xl md:text-3xl font-bold mb-5 text-center">Destinos más famosos:</h2>
+            <h2 className="text-[#409223] text-2xl md:text-3xl font-bold mb-5 text-center">Destinos recomendados:</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 max-w-screen-lg w-full">
                 {destinos.map((destino) => (

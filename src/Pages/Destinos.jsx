@@ -4,18 +4,22 @@ import { Link } from "react-router-dom";
 const Destinos = () => {
     return (
         <>
-            <div className="h-screen bg-[url('/BackGround.jpg')] bg-cover bg-center">
-                <div className='flex flex-row w-auto h-screen justify-center items-center'>
-                    <div className='flex flex-col w-300 h-auto min-h-lg justify-center items-center rounded-3xl' style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)' }}>
-                        <br /><h1 className='text-6xl font-serif text-[#409223] text-center'> Destinos Turísticos En La Huasteca Potosina</h1><br />
-                        <div className='flex flex-col w-3/4 text-center text-2xl'>
-                            <p>En esta sección, encontrarás información detallada sobre los increíbles destinos turísticos que ofrece la hermosa región de la Huasteca Potosina. Descubre impresionantes cascadas, exuberantes selvas, antiguas zonas arqueológicas y mucho más.</p><br />
-                            <p>Nuestro objetivo es brindarte toda la información necesaria para que puedas planificar tu visita y disfrutar al máximo de estos sitios turísticos. Te proporcionaremos datos prácticos, consejos útiles y recomendaciones para que tu experiencia sea inolvidable.</p>
-                            <br />
-                        </div>
+            <div className="min-h-screen bg-[url('/BackGround.jpg')] bg-cover bg-center flex justify-center items-center px-4 py-24 sm:py-32">
+                <div className="bg-white/70 rounded-3xl w-full max-w-4xl px-6 py-10 flex flex-col items-center">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif text-[#409223] text-center">
+                        Destinos turísticos en la huasteca potosina
+                    </h1>
+                    <div className="mt-6 space-y-6 text-center text-base sm:text-lg md:text-xl w-full max-w-2xl">
+                        <p>
+                            En esta sección, encontrarás información detallada sobre los increíbles destinos turísticos que ofrece la hermosa región de la Huasteca Potosina. Descubre impresionantes cascadas, exuberantes selvas, antiguas zonas arqueológicas y mucho más.
+                        </p>
+                        <p>
+                            Nuestro objetivo es brindarte toda la información necesaria para que puedas planificar tu visita y disfrutar al máximo de estos sitios turísticos.
+                        </p>
                     </div>
                 </div>
             </div>
+
             <Catalogo />
         </>
     );
@@ -129,7 +133,7 @@ function Catalogo() {
     return (
         <>
             <div className="w-full flex flex-col items-center mt-15 px-4">
-                <h2 className="text-[#409223] text-2xl md:text-3xl font-bold mb-5 text-center">Destinos Más Famosos:</h2>
+                <h2 className="text-[#409223] text-2xl md:text-3xl font-bold mb-5 text-center">Catálogo de destinos:</h2>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 w-auto">
                     {destinos.map((destino) => (
