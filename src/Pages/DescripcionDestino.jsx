@@ -175,6 +175,7 @@ const DescripcionDestino = () => {
 
       {/* Reseñas */}
       <SeccionResenas />
+      <div className='pt-30'></div>
     </>
   );
 };
@@ -274,34 +275,37 @@ export function ImageSlider({ images }) {
 
 
 const SeccionResenas = () => (
-  <div className="w-full flex justify-center mt-10 px-4">
+  <div className="w-full flex justify-center px-4">
     <div className="max-w-screen-lg w-full">
-      <h1 className="text-[#409223] text-4xl md:text-3xl font-bold mt-5 text-center">Reseñas de usuarios:</h1>
-      <div className="max-w-screen-lg w-full flex flex-row justify-center items-center space-x-3 mt-4">
-        <div className="w-1/3 border-2 border-[#9DC68E] rounded-2xl">
-          <div className="flex justify-center items-center">
+      <h1 className="text-[#409223] text-3xl md:text-4xl font-bold mt-5 text-center">
+        Reseñas de usuarios:
+      </h1>
+      <div className="w-full flex flex-col md:flex-row justify-center items-center gap-4 mt-4">
+        <div className="w-full md:w-1/3 border-2 border-[#9DC68E] rounded-2xl p-4">
+          <div className="flex justify-center items-center mb-2">
             <img className="w-20 h-12" src="/Usuario.png" alt="Foto De Usuario" />
           </div>
-          <h1 className="font-bold text-center">Marilu Martínez</h1>
+          <h2 className="font-bold text-center">Eduardo Sánchez</h2>
           <p className="text-center">Increíble experiencia.</p>
         </div>
-        <div className="w-1/3 border-2 border-[#9DC68E] rounded-2xl">
-          <div className="flex justify-center items-center">
+        <div className="w-full md:w-1/3 border-2 border-[#9DC68E] rounded-2xl p-4">
+          <div className="flex justify-center items-center mb-2">
             <img className="w-20 h-12" src="/Usuario.png" alt="Foto De Usuario" />
           </div>
-          <h1 className="font-bold text-center">Karla Mendoza</h1>
+          <h2 className="font-bold text-center">José Meléndez</h2>
           <p className="text-center">Hermosos paisajes.</p>
         </div>
-        <div className="w-1/3 border-2 border-[#9DC68E] rounded-2xl">
-          <div className="flex justify-center items-center">
+        <div className="w-full md:w-1/3 border-2 border-[#9DC68E] rounded-2xl p-4">
+          <div className="flex justify-center items-center mb-2">
             <img className="w-20 h-12" src="/Usuario.png" alt="Foto De Usuario" />
           </div>
-          <h1 className="font-bold text-center">Roberto Almazán</h1>
+          <h2 className="font-bold text-center">Angel Cedillo</h2>
           <p className="text-center">Muy recomendable.</p>
         </div>
       </div>
     </div>
   </div>
+
 );
 
 export default DescripcionDestino;
