@@ -66,8 +66,8 @@ export default function Chatbot() {
                                 <div
                                     key={index}
                                     className={`p-2 rounded-lg max-w-xs ${msg.sender === "user"
-                                            ? "bg-[#409223] text-white self-end ml-auto"
-                                            : "bg-[#9DC68E] text-black self-start mr-auto"
+                                        ? "bg-[#409223] text-white self-end ml-auto"
+                                        : "bg-[#9DC68E] text-black self-start mr-auto"
                                         }`}
                                 >
                                     {msg.text}
