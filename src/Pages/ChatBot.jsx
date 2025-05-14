@@ -1,45 +1,34 @@
 import { useState } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
 
-const API_KEY = "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";
-
 export default function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
-
     const handleSendMessage = async () => {
-        if (message.trim() === "") return;
 
+        if (message.trim() === "") return;
         const userMessage = { sender: "user", text: message };
         setMessages(prev => [...prev, userMessage]);
         setMessage("");
         setLoading(true);
-
         try {
-            const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+            const response = await fetch("/api/chat", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${API_KEY}`,
                 },
-                body: JSON.stringify({
-                    model: "openai/gpt-3.5-turbo", // O puedes cambiar a otro modelo disponible en OpenRouter
-                    messages: [
-                        { role: "system", content: "Eres un asistente amigable llamado turisteca-bot, tienes que devolver solo respuestas con enfoque ecologico sobre la region huasteca en México asi como recomendaciones que te pida el usuario sobre actividades, hospedajes y destinos turistucos. Cualquier otra cosa que te pregunten que no sea sobre la huasteca o sobre ecoturismo, no respondas" },
-                        { role: "user", content: message },
-                    ],
-                }),
+                body: JSON.stringify({ message }),
             });
 
             const data = await response.json();
             const botReply = data.choices?.[0]?.message?.content || "No entendí, ¿puedes repetirlo?";
             const botMessage = { sender: "bot", text: botReply };
-
             setMessages(prev => [...prev, botMessage]);
+
         } catch (error) {
-            console.error("Error llamando a OpenRouter:", error);
+            console.error("Error llamando al chatbot:", error);
             const errorMessage = { sender: "bot", text: "Error obteniendo respuesta. Intenta de nuevo." };
             setMessages(prev => [...prev, errorMessage]);
         } finally {
@@ -65,11 +54,10 @@ export default function Chatbot() {
                             {messages.map((msg, index) => (
                                 <div
                                     key={index}
-                                    className={`p-2 rounded-lg max-w-xs break-words whitespace-pre-wrap ${msg.sender === "user"
+                                    className={`p-2 rounded-lg max-w-xs ${msg.sender === "user"
                                         ? "bg-[#409223] text-white self-end ml-auto"
                                         : "bg-[#9DC68E] text-black self-start mr-auto"
                                         }`}
-
                                 >
                                     {msg.text}
                                 </div>
