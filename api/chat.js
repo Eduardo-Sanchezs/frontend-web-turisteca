@@ -4,7 +4,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { message } = req.body; // Aquí está el cambio
+        const { message } = req.body;
 
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
@@ -24,7 +24,7 @@ export default async function handler(req, res) {
         if (!response.ok) {
             const errorText = await response.text();
             console.error("Error desde OpenRouter:", errorText);
-            throw new Error("Fallo en la llamada a OpenRouter");
+            return res.status(response.status).json({ error: errorText });
         }
 
         const data = await response.json();
