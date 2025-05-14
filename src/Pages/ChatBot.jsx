@@ -21,16 +21,7 @@ export default function Chatbot() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({
-                    messages: [
-                        {
-                            role: "system",
-                            content:
-                                "Eres un asistente amigable llamado turisteca-bot, que puede responder en cualquier idioma dependiendo de en qué idioma reciba el mensaje. Tienes que devolver solo respuestas con enfoque ecológico sobre la región Huasteca en México, así como recomendaciones que te pida el usuario sobre actividades, hospedajes y destinos turísticos. Cualquier otra cosa que te pregunten que no sea sobre la Huasteca o sobre ecoturismo, no respondas.",
-                        },
-                        { role: "user", content: message },
-                    ],
-                }),
+                body: JSON.stringify({ message }),
             });
 
             const data = await response.json();

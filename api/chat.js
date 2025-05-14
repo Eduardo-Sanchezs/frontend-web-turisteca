@@ -4,7 +4,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { message } = await req.json(); // Requiere que el body tenga { message: "texto del usuario" }
+        const { message } = req.body; // Aquí está el cambio
 
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
