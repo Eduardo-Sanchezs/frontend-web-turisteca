@@ -137,7 +137,7 @@ function Catalogo() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 w-auto">
                     {destinos.map((destino) => (
-                        <Link key={destino.id} to={`/descripcion-destino/${destino.id}`} className="flex flex-col items-center border rounded-lg shadow-lg p-3 hover:scale-105 transition w-auto">
+                        <Link key={destino.id} to={`/descripcion-destino/${destino.id}`} className="flex flex-col items-center border rounded-lg shadow-lg p-3 hover:scale-105 transition w-auto border-[#9DC68E]">
                             <img
                                 src={destino.imagenURL}
                                 alt={destino.nombre}

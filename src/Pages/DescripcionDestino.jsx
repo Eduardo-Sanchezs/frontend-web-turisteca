@@ -190,7 +190,7 @@ const ListaLugares = ({ lugares, expandido, setExpandido }) => {
         {lugaresMostrados.map((lugar) => (
           <div
             key={lugar.id}
-            className="flex flex-col items-center border rounded-lg shadow-lg p-3 hover:scale-105 transition cursor-pointer"
+            className="flex flex-col items-center border rounded-lg shadow-lg p-3 hover:scale-105 transition cursor-pointer border-[#9DC68E]"
             onClick={() => navigate(`/descripcion-destino/${lugar.id}`)}
           >
             <img src={lugar.imagenPrincipal} alt={lugar.nombre} className="w-full h-48 object-cover rounded-lg" />
@@ -202,7 +202,7 @@ const ListaLugares = ({ lugares, expandido, setExpandido }) => {
 
       <button
         onClick={() => setExpandido(!expandido)}
-        className="mt-5 px-6 py-3 bg-[#409223] text-white font-bold rounded-lg hover:bg-[#36791c] transition text-center w-full sm:w-auto"
+        className="mt-5 px-6 py-3 bg-[#409223] text-white font-bold rounded-lg hover:bg-[#36791c] transition text-center w-full sm:w-auto "
       >
         {expandido ? "Ver Menos" : "Ver Más Opciones"}
       </button>
@@ -278,25 +278,25 @@ const SeccionResenas = () => (
     <div className="max-w-screen-lg w-full">
       <h1 className="text-[#409223] text-4xl md:text-3xl font-bold mt-5 text-center">Reseñas de usuarios:</h1>
       <div className="max-w-screen-lg w-full flex flex-row justify-center items-center space-x-3 mt-4">
-        <div className="w-1/3 border-2 border-gray-500 rounded-2xl">
+        <div className="w-1/3 border-2 border-[#9DC68E] rounded-2xl">
           <div className="flex justify-center items-center">
             <img className="w-20 h-12" src="/Usuario.png" alt="Foto De Usuario" />
           </div>
-          <h1 className="font-bold text-center">Marilu Martinez</h1>
+          <h1 className="font-bold text-center">Marilu Martínez</h1>
           <p className="text-center">Increíble experiencia.</p>
         </div>
-        <div className="w-1/3 border-2 border-gray-500 rounded-2xl">
+        <div className="w-1/3 border-2 border-[#9DC68E] rounded-2xl">
           <div className="flex justify-center items-center">
             <img className="w-20 h-12" src="/Usuario.png" alt="Foto De Usuario" />
           </div>
           <h1 className="font-bold text-center">Karla Mendoza</h1>
           <p className="text-center">Hermosos paisajes.</p>
         </div>
-        <div className="w-1/3 border-2 border-gray-500 rounded-2xl">
+        <div className="w-1/3 border-2 border-[#9DC68E] rounded-2xl">
           <div className="flex justify-center items-center">
             <img className="w-20 h-12" src="/Usuario.png" alt="Foto De Usuario" />
           </div>
-          <h1 className="font-bold text-center">Roberto Almazan</h1>
+          <h1 className="font-bold text-center">Roberto Almazán</h1>
           <p className="text-center">Muy recomendable.</p>
         </div>
       </div>
