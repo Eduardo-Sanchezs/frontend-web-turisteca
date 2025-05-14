@@ -15,7 +15,7 @@ export default async function handler(req, res) {
             body: JSON.stringify({
                 model: "openai/gpt-3.5-turbo",
                 messages: [
-                    { role: "system", content: "..." },
+                    { role: "system", content: "Eres un asistente amigable llamado turisteca-bot, que puede responder en cualquier idioma dependiendo de en que idioma reciba el mensaje, tienes que devolver solo respuestas con enfoque ecologico sobre la region huasteca en México asi como recomendaciones que te pida el usuario sobre actividades, hospedajes y destinos turistucos. Cualquier otra cosa que te pregunten que no sea sobre la huasteca o sobre ecoturismo, no respondas" },
                     { role: "user", content: message },
                 ],
             }),
