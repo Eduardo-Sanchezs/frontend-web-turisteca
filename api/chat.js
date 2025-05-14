@@ -15,18 +15,17 @@ export default async function handler(req, res) {
             body: JSON.stringify({
                 model: "openai/gpt-3.5-turbo",
                 messages: [
-                    {
-                        role: "system",
-                        content:
-                            "Eres un asistente amigable llamado turisteca-bot, que puede responder en cualquier idioma dependiendo de en qué idioma reciba el mensaje. Tienes que devolver solo respuestas con enfoque ecológico sobre la región Huasteca en México, así como recomendaciones sobre actividades, hospedajes y destinos turísticos. Cualquier otra cosa que te pregunten que no sea sobre la Huasteca o sobre ecoturismo, no respondas.",
-                    },
-                    {
-                        role: "user",
-                        content: message,
-                    },
+                    { role: "system", content: "..." },
+                    { role: "user", content: message },
                 ],
             }),
         });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error("Error desde OpenRouter:", errorText);
+            throw new Error("Fallo en la llamada a OpenRouter");
+        }
 
         const data = await response.json();
         res.status(200).json(data);
