@@ -15,49 +15,28 @@ const DescripcionDestino = () => {
   useEffect(() => {
     async function fetchDatos() {
       try {
-        // Login para obtener token
-        const loginResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/usuarios/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            username: 'juanperez',
-            password: 'contrasena'
-          })
-        });
-        const loginData = await loginResponse.json();
-        const token = loginData.data.accessToken;
-
         // Obtener datos del destino
-        const destinoResponse = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/lugares/${id}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const destinoResponse = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/lugares/${id}`);
         const destinoData = await destinoResponse.json();
         if (destinoData.success) {
           const lugar = destinoData.data;
-          console.log("Destino:", lugar);
           setDestino(lugar);
 
           // Imagen principal del destino
-          const imagenResponse = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/imagen-url/${lugar.idImagen}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
+          const imagenResponse = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/imagen-url/${lugar.idImagen}`);
           const imagenData = await imagenResponse.json();
           if (imagenData.success) {
             setImagenDestino(imagenData.data.imagenURL);
           }
 
           // Obtener imágenes para el carrusel
-          const imagenesLugarResponse = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/imagen-lugar/${id}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
+          const imagenesLugarResponse = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/imagen-lugar/${id}`);
           const imagenesLugarData = await imagenesLugarResponse.json();
 
           if (imagenesLugarData.success) {
             const imagenesURLs = await Promise.all(
               imagenesLugarData.data.map(async ({ idImagen }) => {
-                const res = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/imagen-url/${idImagen}`, {
-                  headers: { Authorization: `Bearer ${token}` }
-                });
+                const res = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/imagen-url/${idImagen}`);
                 const data = await res.json();
                 return data.success ? data.data.imagenURL : null;
               })
@@ -65,32 +44,28 @@ const DescripcionDestino = () => {
             const imagenesFiltradas = imagenesURLs.filter(url => url !== null);
             setImagenesCarrusel(imagenesFiltradas.length > 0 ? imagenesFiltradas : ["/BackGround.jpg"]);
           }
-        }
 
-        // Obtener lugares filtrados (hoteles y hospedaje)
-        const lugaresResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/lugares', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const lugaresData = await lugaresResponse.json();
-        if (lugaresData.success) {
-          const filtrados = lugaresData.data.filter(
-            lugar =>
-              (lugar.idCategoria === 2 || lugar.idCategoria === 3) &&
-              lugar.idCiudad === destinoData.data.idCiudad
-          );
+          // Obtener lugares filtrados (hoteles y hospedaje)
+          const lugaresResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/lugares');
+          const lugaresData = await lugaresResponse.json();
+          if (lugaresData.success) {
+            const filtrados = lugaresData.data.filter(
+              lugar =>
+                (lugar.idCategoria === 2 || lugar.idCategoria === 3) &&
+                lugar.idCiudad === destinoData.data.idCiudad
+            );
 
-          const lugaresConImagenes = await Promise.all(filtrados.map(async (lugar) => {
-            const imagenRes = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/imagen-url/${lugar.idImagen}`, {
-              headers: { Authorization: `Bearer ${token}` }
-            });
-            const imagenData = await imagenRes.json();
-            return {
-              ...lugar,
-              imagenPrincipal: imagenData.success ? imagenData.data.imagenURL : "/BackGround.jpg"
-            };
-          }));
+            const lugaresConImagenes = await Promise.all(filtrados.map(async (lugar) => {
+              const imagenRes = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/imagen-url/${lugar.idImagen}`);
+              const imagenData = await imagenRes.json();
+              return {
+                ...lugar,
+                imagenPrincipal: imagenData.success ? imagenData.data.imagenURL : "/BackGround.jpg"
+              };
+            }));
 
-          setLugaresFiltrados(lugaresConImagenes);
+            setLugaresFiltrados(lugaresConImagenes);
+          }
         }
       } catch (error) {
         console.error(error);
@@ -101,7 +76,6 @@ const DescripcionDestino = () => {
 
     fetchDatos();
   }, [id]);
-
 
   if (!destino) {
     return (

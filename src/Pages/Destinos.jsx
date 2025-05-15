@@ -33,62 +33,28 @@ function Catalogo() {
     useEffect(() => {
         async function fetchData() {
             try {
-                // Primero iniciar sesión
-                const loginResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/usuarios/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        username: 'juanperez',
-                        password: 'contrasena'
-                    })
-                });
-
-                const loginData = await loginResponse.json();
-
-                if (!loginData.data || !loginData.data.accessToken) {
-                    console.error('Error al iniciar sesión:', loginData);
-                    setLoading(false);
-                    return;
-                }
-
-                const token = loginData.data.accessToken;
-
                 // Obtener ciudades
-                const ciudadesResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/ciudades', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-
+                const ciudadesResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/ciudades');
                 const ciudadesData = await ciudadesResponse.json();
                 if (ciudadesData.success) {
-                    setCiudades(ciudadesData.data); // Guardamos las ciudades
+                    setCiudades(ciudadesData.data);
                 }
 
-                // Luego obtener lugares
-                const lugaresResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/lugares', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-
+                // Obtener lugares
+                const lugaresResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/lugares');
                 const lugaresData = await lugaresResponse.json();
 
                 if (lugaresData.success) {
                     const destinosFiltrados = lugaresData.data.filter(destino => destino.idCategoria === 1 || destino.idCategoria === 4);
 
-                    // Ahora por cada destino, buscar su imagen
+                    // Obtener imagen por cada destino
                     const destinosConImagen = await Promise.all(destinosFiltrados.map(async (destino) => {
                         try {
-                            const imagenResponse = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/imagen-url/${destino.idImagen}`, {
-                                headers: {
-                                    Authorization: `Bearer ${token}`
-                                }
-                            });
+                            const imagenResponse = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/imagen-url/${destino.idImagen}`);
                             const imagenData = await imagenResponse.json();
                             return {
                                 ...destino,
-                                imagenURL: imagenData.data?.imagenURL || "/BackGround.jpg" // usa backup si falla
+                                imagenURL: imagenData.data?.imagenURL || "/BackGround.jpg"
                             };
                         } catch (error) {
                             console.error(`Error obteniendo imagen para destino ${destino.nombre}:`, error);
@@ -100,7 +66,6 @@ function Catalogo() {
                     }));
 
                     setDestinos(destinosConImagen);
-
                 } else {
                     console.error('Error al obtener lugares:', lugaresData);
                 }
@@ -124,7 +89,6 @@ function Catalogo() {
         );
     }
 
-    // Función para obtener el nombre de la ciudad
     const obtenerCiudad = (idCiudad) => {
         const ciudad = ciudades.find(c => c.id === idCiudad);
         return ciudad ? ciudad.nombre : 'Ciudad desconocida';

@@ -162,6 +162,7 @@ export function ImageSlider() {
 
 
 /* Sección de Destinos Más Famosos */
+/* Sección de Destinos Más Famosos */
 function DestinosFamosos() {
     const [destinos, setDestinos] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -169,31 +170,8 @@ function DestinosFamosos() {
     useEffect(() => {
         async function fetchDestinos() {
             try {
-                // Login
-                const loginResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/usuarios/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        username: 'juanperez',
-                        password: 'contrasena'
-                    })
-                });
-
-                const loginData = await loginResponse.json();
-
-                if (!loginData.data || !loginData.data.accessToken) {
-                    console.error('Error al iniciar sesión:', loginData);
-                    setLoading(false);
-                    return;
-                }
-
-                const token = loginData.data.accessToken;
-
-                // Obtener lugares
-                const lugaresResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/lugares', {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-
+                // Obtener lugares directamente sin autenticación
+                const lugaresResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/lugares');
                 const lugaresData = await lugaresResponse.json();
 
                 if (lugaresData.success) {
@@ -201,9 +179,7 @@ function DestinosFamosos() {
 
                     const destinosConImagen = await Promise.all(destinosFiltrados.slice(0, 4).map(async (destino) => {
                         try {
-                            const imagenResponse = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/imagen-url/${destino.idImagen}`, {
-                                headers: { Authorization: `Bearer ${token}` }
-                            });
+                            const imagenResponse = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/imagen-url/${destino.idImagen}`);
                             const imagenData = await imagenResponse.json();
                             return {
                                 ...destino,
@@ -263,5 +239,6 @@ function DestinosFamosos() {
         </div>
     );
 }
+
 
 export default LandingPage;
