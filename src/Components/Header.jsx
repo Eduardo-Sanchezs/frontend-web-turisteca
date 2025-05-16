@@ -1,76 +1,115 @@
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/Turisteca.png';
 
-function Header() {
+const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState(null);
+  const [userImg, setUserImg] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    const userId = localStorage.getItem('userId');
+
+    if (accessToken && userId) {
+      fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/usuario-detalles/${userId}`, {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            setUser(data.data);
+
+            fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/imagen-url/${userId}`, {
+              headers: { Authorization: `Bearer ${accessToken}` }
+            })
+              .then(res => res.json())
+              .then(imgData => {
+                if (imgData.success) {
+                  setUserImg(imgData.data.imagenURL);
+                }
+              });
+          }
+        });
+    }
+  }, []);
+
+  const handleLogout = async () => {
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    try {
+      const response = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/usuarios/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ refreshToken }),
+      });
+
+      if (response.ok) {
+        localStorage.clear();
+        navigate('/login');
+        window.location.reload();
+      } else {
+        const errorData = await response.json();
+        console.error('Fallo al cerrar sesión:', errorData);
+      }
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    }
+  };
 
   return (
     <>
       <header className="fixed top-0 left-0 w-full bg-[#9DC68E] p-2 z-50 shadow-md">
-        <div className="container mx-auto flex justify-between items-center px-4">
-          {/* Logo + Título */}
-          <div className="flex items-center space-x-2">
-            <Link to="/">
-              <img src={logo} alt="Logo" className="h-10 w-10 sm:h-14 sm:w-14" />
-            </Link>
-            <Link to="/">
-              <h1 className="text-xl sm:text-2xl font-bold">turisteca</h1>
-            </Link>
-          </div>
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
+          <Link to="/home" className="flex items-center space-x-2">
+            <img src={logo} alt="Logo" className="h-10 sm:h-12 md:h-14" />
+            <span className="text-xl sm:text-2xl font-bold">Turisteca</span>
+          </Link>
 
-          {/* Menú hamburguesa */}
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-black focus:outline-none"
-              aria-label="Abrir menú"
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                {isOpen ? (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                ) : (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                )}
-              </svg>
-            </button>
-          </div>
-
-          {/* Navegación escritorio */}
-          <nav className="hidden md:flex space-x-5 items-center">
-            <Link to="/destinos">Destinos</Link>
-            <Link to="/registro">Registrate</Link>
-          </nav>
+          {user ? (
+            <div className="relative">
+              <button onClick={() => setIsOpen(!isOpen)} className="focus:outline-none">
+                <img
+                  src={userImg || '/default-profile.png'}
+                  alt="Perfil"
+                  className="w-10 h-10 rounded-full object-cover border"
+                />
+              </button>
+              {isOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                  <div className="px-4 py-2 text-sm text-gray-700 border-b">
+                    <div className="font-bold">{user.nombre}</div>
+                  </div>
+                  <Link to="/perfil" className="block px-4 py-2 text-sm hover:bg-gray-100">Perfil</Link>
+                  <Link to="/mapa" className="block px-4 py-2 text-sm hover:bg-gray-100">Mapa</Link>
+                  <Link to="/calculadora" className="block px-4 py-2 text-sm hover:bg-gray-100">Calculadora</Link>
+                  <Link to="/destinos" className="block px-4 py-2 text-sm hover:bg-gray-100">Destinos</Link>
+                  <Link to="/configuracion" className="block px-4 py-2 text-sm hover:bg-gray-100">Configuración</Link>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                  >
+                    Cerrar sesión
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex space-x-4">
+              <Link to="/login" className="hover:underline">Iniciar sesión</Link>
+              <Link to="/registro" className="hover:underline">Registrarse</Link>
+            </div>
+          )}
         </div>
-
-        {/* Menú móvil desplegable */}
-        {isOpen && (
-          <div className="md:hidden mt-2 px-4 space-y-2 bg-[#9DC68E] pb-4">
-            <Link to="/conocenos" className="block" onClick={() => setIsOpen(false)}>Registrate</Link>
-            <Link to="/destinos" className="block" onClick={() => setIsOpen(false)}>Destinos</Link>
-          </div>
-        )}
       </header>
-
-      {/* Compensación para el header fijo */}
-      <div className="pt-10"></div>
+      <div className='pt-15'></div>
     </>
   );
-}
+};
 
 export default Header;

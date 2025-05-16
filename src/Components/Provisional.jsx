@@ -23,6 +23,7 @@ const Provisional = () => {
                 localStorage.removeItem('refreshToken');
                 localStorage.removeItem('userId');
                 navigate('/login');
+                window.location.reload();
             } else {
                 const errorData = await response.json();
                 console.error('Fallo al cerrar sesión:', errorData);

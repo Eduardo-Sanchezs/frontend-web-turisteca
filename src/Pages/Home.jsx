@@ -55,7 +55,7 @@ const Home = () => {
 
     return (
         <>
-            <div className="bg-gray-100 mt-5">
+            <div className="bg-gray-100">
                 {posts.map((post) => (
                     <PostCard key={post.id} post={post} />
                 ))}

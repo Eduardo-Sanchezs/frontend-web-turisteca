@@ -29,9 +29,8 @@ const Login = () => {
                 localStorage.setItem('accessToken', result.data.accessToken);
                 localStorage.setItem('refreshToken', result.data.refreshToken);
                 localStorage.setItem('userId', result.data.id);
-
-                // Redirige al home
-                navigate('/home');
+                navigate('/home');// Redirige al home
+                window.location.reload();
             } else {
                 alert('Credenciales incorrectas');
             }
