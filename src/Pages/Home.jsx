@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PostCard from '../Components/PostCard';
+import Provisional from '../Components/Provisional';
 
 const Home = () => {
     const [posts, setPosts] = useState([]);
@@ -53,11 +54,15 @@ const Home = () => {
     if (loading) return <div className="text-center mt-10">Cargando publicaciones...</div>;
 
     return (
-        <div className="bg-gray-100 mt-5">
-            {posts.map((post) => (
-                <PostCard key={post.id} post={post} />
-            ))}
-        </div>
+        <>
+            <div className="bg-gray-100 mt-5">
+                {posts.map((post) => (
+                    <PostCard key={post.id} post={post} />
+                ))}
+            </div>
+
+            <Provisional />
+        </>
     );
 };
 
