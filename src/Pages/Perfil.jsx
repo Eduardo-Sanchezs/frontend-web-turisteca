@@ -58,7 +58,7 @@ const Perfil = () => {
                 <hr className="border-gray-300 mb-6" />
 
                 {/* Galería de publicaciones (puedes rellenar con grid si quieres mostrar imágenes después) */}
-                <div className="text-center text-gray-500 italic">aqui va algo. _.</div>
+                <Post />
             </div>
         </div>
     );

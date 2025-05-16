@@ -25,14 +25,20 @@ const LandingPage = () => {
                         la región Huasteca es un destino con un gran potencial gracias a su riqueza natural,
                         histórica y gastronómica. Sin embargo, la planificación eficiente de un viaje puede ser un reto debido a la dispersión de información, la falta de integración de servicios y la
                         necesidad de fomentar un turismo más sostenible. Por suerte nosotros tenemos la solución.
-                        Somos turisteca y nos dedicamos a promover el ecoturismo por medio de nuestra App, permitiendo a nuestros usuarios ser más responsables en sus viajes y proteger sus lugares favoritos en la región Huasteca.
+                        Somos turisteca y nos dedicamos a promover el ecoturismo por medio de nuestra red social, permitiendo a nuestros usuarios ser más responsables en sus viajes y proteger sus lugares favoritos en la región Huasteca.
                     </p>
 
-                    <div className='bg-[#409223] w-45 h-auto flex rounded-full justify-center items-center mt-3'>
-                        <Link to="/Anuncio" className='text-white'> Conoce nuestra app </Link>
+                    <div className="w-full flex justify-center sm:justify-start mt-5">
+                        <Link
+                            to="/Login"
+                            className="bg-[#409223] text-white text-sm sm:text-base font-semibold px-4 sm:px-5 py-1.5 sm:py-2.5 rounded-full shadow-lg hover:bg-[#36791c] hover:shadow-xl transition duration-300 ease-in-out w-full sm:w-auto text-center"
+                        >
+                            Únete a nuestra comunidad
+                        </Link>
                     </div>
                 </div>
             </div>
+
 
             {/* Slider de Imágenes */}
             <ImageSlider />

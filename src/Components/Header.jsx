@@ -53,15 +53,15 @@ function Header() {
 
           {/* Navegación escritorio */}
           <nav className="hidden md:flex space-x-5 items-center">
-            <Link to="/conocenos">Conoce turisteca</Link>
             <Link to="/destinos">Destinos</Link>
+            <Link to="/registro">Registrate</Link>
           </nav>
         </div>
 
         {/* Menú móvil desplegable */}
         {isOpen && (
           <div className="md:hidden mt-2 px-4 space-y-2 bg-[#9DC68E] pb-4">
-            <Link to="/conocenos" className="block" onClick={() => setIsOpen(false)}>Conoce turisteca</Link>
+            <Link to="/conocenos" className="block" onClick={() => setIsOpen(false)}>Registrate</Link>
             <Link to="/destinos" className="block" onClick={() => setIsOpen(false)}>Destinos</Link>
           </div>
         )}
