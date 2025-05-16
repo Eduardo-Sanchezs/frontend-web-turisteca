@@ -29,7 +29,7 @@ const Perfil = () => {
                         {/* Nombre y botón */}
                         <div className="flex flex-col sm:flex-row items-center sm:items-center gap-4">
                             <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800">{user.username}</h2>
-                            <button className="bg-white border border-gray-300 px-4 py-1 rounded-md text-sm hover:bg-gray-100 transition">
+                            <button className="bg-white border border-gray-300 px-4 py-1 rounded-md text-sm hover:bg-gray-100 transition" to="./home">
                                 Editar perfil
                             </button>
                         </div>
