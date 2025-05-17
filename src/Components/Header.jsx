@@ -103,9 +103,8 @@ const Header = () => {
                   className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50"
                 >
                   <div className="px-4 py-2 text-sm text-gray-700 border-b">
-                    <div className="font-bold">{user.nombre}</div>
+                    <div className="font-bold hover:underline"><Link to="/perfil">{user.nombre}</Link></div>
                   </div>
-                  <Link to="/perfil" className="block px-4 py-2 text-sm hover:bg-gray-100">Perfil</Link>
                   <Link to="/mapa" className="block px-4 py-2 text-sm hover:bg-gray-100">Mapa</Link>
                   <Link to="/calculadora" className="block px-4 py-2 text-sm hover:bg-gray-100">Calculadora</Link>
                   <Link to="/destinos" className="block px-4 py-2 text-sm hover:bg-gray-100">Destinos</Link>

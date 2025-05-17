@@ -13,7 +13,7 @@ import Destinos from './Pages/Destinos';
 import DescripcionDestino from './Pages/DescripcionDestino';
 import DescripcionHotel from './Pages/DescripcionHotel';
 import Home from './Pages/Home';
-import Perfil from './Pages/Pruebas';
+import Perfil from './Pages/Perfil';
 
 
 import Pruebas from './Pages/Pruebas';
@@ -35,7 +35,8 @@ function App() {
         <Route path='/descripcion-destino/:id' element={<DescripcionDestino />} />
         <Route path='/descripcion-hotel' element={<DescripcionHotel />} />
         <Route path="/home" element={<ProtectedRoute> <Home /> </ProtectedRoute>} />
-        <Route path='/perfil' element={<ProtectedRoute> <Perfil /> </ProtectedRoute>} />
+        <Route path="/perfil" element={<ProtectedRoute> <Perfil /> </ProtectedRoute>} />
+
 
         <Route path='/pruebas' element={<Pruebas />} />
         <Route path='/provisional' element={<Provisional />} />
