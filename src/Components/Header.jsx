@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/Turisteca.png';
 
@@ -7,6 +7,9 @@ const Header = () => {
   const [user, setUser] = useState(null);
   const [userImg, setUserImg] = useState(null);
   const navigate = useNavigate();
+
+  const menuRef = useRef(null);
+  const buttonRef = useRef(null);
 
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
@@ -20,19 +23,29 @@ const Header = () => {
         .then(data => {
           if (data.success) {
             setUser(data.data);
-
-            fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/imagen-url/${userId}`, {
-              headers: { Authorization: `Bearer ${accessToken}` }
-            })
-              .then(res => res.json())
-              .then(imgData => {
-                if (imgData.success) {
-                  setUserImg(imgData.data.imagenURL);
-                }
-              });
+            setUserImg(data.data.imagenURL);
           }
         });
     }
+  }, []);
+
+  // Cerrar menú si se da clic fuera
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
 
   const handleLogout = async () => {
@@ -73,15 +86,22 @@ const Header = () => {
 
           {user ? (
             <div className="relative">
-              <button onClick={() => setIsOpen(!isOpen)} className="focus:outline-none">
+              <button
+                ref={buttonRef}
+                onClick={() => setIsOpen(!isOpen)}
+                className="focus:outline-none"
+              >
                 <img
-                  src={userImg || '/default-profile.png'}
+                  src={userImg || 'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'}
                   alt="Perfil"
                   className="w-10 h-10 rounded-full object-cover border"
                 />
               </button>
               {isOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                <div
+                  ref={menuRef}
+                  className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50"
+                >
                   <div className="px-4 py-2 text-sm text-gray-700 border-b">
                     <div className="font-bold">{user.nombre}</div>
                   </div>
@@ -102,7 +122,6 @@ const Header = () => {
           ) : (
             <div className="flex space-x-4">
               <Link to="/login" className="hover:underline">Iniciar sesión</Link>
-              <Link to="/registro" className="hover:underline">Registrarse</Link>
             </div>
           )}
         </div>

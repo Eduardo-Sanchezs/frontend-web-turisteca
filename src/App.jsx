@@ -42,8 +42,6 @@ function App() {
 
         <Route path='/post' element={<Post />} />
 
-
-
       </Routes>
       <Footer />
     </Router>

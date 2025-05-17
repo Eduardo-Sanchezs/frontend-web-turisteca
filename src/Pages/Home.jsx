@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PostCard from '../Components/PostCard';
-import Provisional from '../Components/Provisional';
+import Publicar from '../Components/Publicar';
 
 const Home = () => {
     const [posts, setPosts] = useState([]);
@@ -56,12 +56,13 @@ const Home = () => {
     return (
         <>
             <div className="bg-gray-100">
-                {posts.map((post) => (
-                    <PostCard key={post.id} post={post} />
-                ))}
+                {[...posts]
+                    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                    .map((post) => (
+                        <PostCard key={post.id} post={post} />
+                    ))}
             </div>
-
-            <Provisional />
+            <Publicar />
         </>
     );
 };
