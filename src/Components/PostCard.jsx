@@ -36,30 +36,23 @@ export default function PostCard({ post }) {
 
     const fetchUserInfo = async (userId, token) => {
         try {
-            console.log('fetchUserInfo called for userId:', userId, 'token:', token);
             const resUser = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/usuario-detalles/${userId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
             });
-            console.log('resUser:', resUser);
             const userData = await resUser.json();
-            console.log('userData:', userData);
             const username = userData?.data?.nombre || 'User';
             let avatar = defaultAvatar;
 
             if (userData?.data?.img_perfil) {
                 try {
-                    console.log('Fetching image for img_perfil:', userData.data.img_perfil);
                     const resImage = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/imagen-url/${userData.data.img_perfil}`);
-                    console.log('resImage:', resImage);
                     const imageData = await resImage.json();
-                    console.log('imageData:', imageData);
                     if (imageData?.data?.imagenURL) {
                         avatar = imageData.data.imagenURL;
                     } else {
-                        console.log('ImagenURL not found for id:', userData.data.img_perfil, 'Response:', imageData);
                     }
                 } catch (error) {
                     console.error('Error fetching image URL:', error);
