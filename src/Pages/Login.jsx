@@ -31,6 +31,7 @@ const Login = () => {
                 localStorage.setItem('userId', result.data.id);
                 navigate('/home');// Redirige al home
                 window.location.reload();
+                console.log('accessToken guardado:', result.data.accessToken);
             } else {
                 alert('Credenciales incorrectas');
             }

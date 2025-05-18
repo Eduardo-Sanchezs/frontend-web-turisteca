@@ -7,7 +7,7 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchPosts = async () => {
+        const fetchData = async () => {
             const token = localStorage.getItem('accessToken');
             if (!token) {
                 console.error('No access token found');
@@ -16,39 +16,67 @@ const Home = () => {
             }
 
             try {
-                const response = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/posts', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
+                const [postsRes, commentsRes] = await Promise.all([
+                    fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/posts', {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    }),
+                    fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/comentarios', {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    }),
+                ]);
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error('Error:', errorData.message || response.statusText);
-                    throw new Error('Error al obtener los posts');
+                if (!postsRes.ok || !commentsRes.ok) {
+                    console.error('Error al obtener datos');
+                    return;
                 }
 
-                const data = await response.json();
+                const postsData = await postsRes.json();
+                const commentsData = await commentsRes.json();
 
-                // Adaptar los datos al formato que espera PostCard
-                const adaptedPosts = data.data.map(post => ({
+                // Agrupar comentarios por idPost
+                const groupedComments = {};
+                commentsData.data.forEach((comment) => {
+                    const postId = comment.idPost;
+                    if (!groupedComments[postId]) {
+                        groupedComments[postId] = [];
+                    }
+                    groupedComments[postId].push({
+                        id: comment.idComentario,
+                        idUsuario: comment.idUsuario, // <--- CAMBIADO AQUÍ
+                        contenido: comment.contenido,
+                        creado_en: comment.creado_en,
+                        likes: comment.likes || 0,
+                    });
+                });
+
+                // Adaptar los posts y añadir comentarios correspondientes
+                const adaptedPosts = postsData.data.map(post => ({
                     id: post.id,
                     idUsuario: post.idUsuario,
                     description: post.contenido,
                     imageUrl: post.imagenes?.[0] || null,
                     createdAt: post.creado_en,
+                    comments: groupedComments[post.id] || [], // Asigna los comentarios aquí
                 }));
 
-                setPosts(adaptedPosts);
+                // Ordenar los posts por ID descendente
+                const sortedPosts = adaptedPosts.sort((a, b) => b.id - a.id);
+
+                setPosts(sortedPosts);
             } catch (error) {
-                console.error('Error al obtener los posts:', error.message);
+                console.error('Error al obtener los datos:', error);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchPosts();
+        fetchData();
     }, []);
 
     if (loading) return <div className="text-center mt-10">Cargando publicaciones...</div>;
@@ -56,11 +84,9 @@ const Home = () => {
     return (
         <>
             <div className="bg-gray-100">
-                {[...posts]
-                    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                    .map((post) => (
-                        <PostCard key={post.id} post={post} />
-                    ))}
+                {posts.map((post) => (
+                    <PostCard key={post.id} post={post} />
+                ))}
             </div>
             <Publicar />
         </>

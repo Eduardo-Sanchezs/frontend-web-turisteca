@@ -25,6 +25,7 @@ export default function PostButton() {
         setImage(null);
         setImagePreview(null);
         setText("");
+        window.location.reload();
     };
 
     const handleSubmit = async (e) => {
@@ -33,44 +34,51 @@ export default function PostButton() {
         const accessToken = localStorage.getItem('accessToken');
         const userId = localStorage.getItem('userId');
 
-        if (!image || !text || !accessToken || !userId) {
-            alert("Faltan datos para publicar.");
+        if (!text && !image) {
+            alert("Debes escribir un texto o subir una imagen para publicar.");
             return;
         }
 
         try {
-            // 1. Subir la imagen
-            const formData = new FormData();
-            formData.append('imagen', image);
+            let idImagen = null;
 
-            const uploadResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/upload', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                },
-                body: formData,
-            });
+            // 1. Subir imagen solo si hay una
+            if (image) {
+                const formData = new FormData();
+                formData.append('imagen', image);
 
-            const uploadData = await uploadResponse.json();
-            if (!uploadData.success) {
-                throw new Error("Error al subir la imagen.");
+                const uploadResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/upload', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                    body: formData,
+                });
+
+                const uploadData = await uploadResponse.json();
+                if (!uploadData.success) {
+                    throw new Error("Error al subir la imagen.");
+                }
+
+                idImagen = uploadData.data.id;
             }
 
-            const idImagen = uploadData.data.id;
+            // 2. Crear post con contenido e idImagen si existen
+            const postBody = {
+                idUsuario: parseInt(userId),
+                creado_en: new Date().toISOString().split("T")[0],
+            };
 
-            // 2. Crear el post
+            if (text) postBody.contenido = text;
+            if (idImagen !== null) postBody.idImagen = idImagen;
+
             const postResponse = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/posts', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${accessToken}`
                 },
-                body: JSON.stringify({
-                    contenido: text,
-                    idImagen,
-                    idUsuario: parseInt(userId),
-                    creado_en: new Date().toISOString().split("T")[0]  // formato "YYYY-MM-DD"
-                })
+                body: JSON.stringify(postBody)
             });
 
             const postData = await postResponse.json();
@@ -86,6 +94,7 @@ export default function PostButton() {
             alert("Ocurrió un error al publicar.");
         }
     };
+
 
 
 
@@ -150,7 +159,7 @@ export default function PostButton() {
 
                             <button
                                 type="submit"
-                                className="w-full bg-[#409223] text-white py-2 rounded-md hover:bg-[#9DC68E] transition"
+                                className="w-full bg-[#409223] text-white py-2 rounded-md hover:bg-[#9DC68E] transition disabled:opacity-50"
                             >
                                 Publicar
                             </button>

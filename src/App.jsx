@@ -38,6 +38,7 @@ function App() {
         <Route path="/perfil" element={<ProtectedRoute> <Perfil /> </ProtectedRoute>} />
 
 
+
         <Route path='/pruebas' element={<Pruebas />} />
         <Route path='/provisional' element={<Provisional />} />
 
