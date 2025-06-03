@@ -15,6 +15,8 @@ import DescripcionDestino from './Pages/DescripcionDestino';
 import DescripcionHotel from './Pages/DescripcionHotel';
 import Home from './Pages/Home';
 import Perfil from './Pages/Perfil';
+import Mapa from './Pages/MapaScreen';
+import Planificar from './Pages/PlanificarScreen';
 
 
 import Pruebas from './Pages/Pruebas';
@@ -37,6 +39,8 @@ function App() {
         <Route path='/descripcion-hotel' element={<DescripcionHotel />} />
         <Route path="/home" element={<ProtectedRoute> <Home /> </ProtectedRoute>} />
         <Route path="/perfil" element={<ProtectedRoute> <Perfil /> </ProtectedRoute>} />
+        <Route path="/mapa" element={<ProtectedRoute> <Mapa /> </ProtectedRoute>} />
+        <Route path="/planificar" element={<ProtectedRoute> <Planificar /> </ProtectedRoute>} />
 
 
 

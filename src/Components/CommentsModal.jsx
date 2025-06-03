@@ -96,13 +96,7 @@ export default function CommentsModal({ comments, onClose, onReact, postId, onCo
                                     </div>
                                     <div className="flex items-center text-xs text-gray-500 mt-1 gap-2">
                                         <span>{comment.date}</span>
-                                        <button
-                                            onClick={() => onReact(idx)}
-                                            className="flex items-center text-red-500 gap-1"
-                                        >
-                                            <Heart className="w-4 h-4" fill="currentColor" />
-                                            <span>{comment.likes}</span>
-                                        </button>
+
                                     </div>
                                 </div>
                             </div>

@@ -52,7 +52,6 @@ export default function PostCard({ post }) {
                     const imageData = await resImage.json();
                     if (imageData?.data?.imagenURL) {
                         avatar = imageData.data.imagenURL;
-                    } else {
                     }
                 } catch (error) {
                     console.error('Error fetching image URL:', error);
