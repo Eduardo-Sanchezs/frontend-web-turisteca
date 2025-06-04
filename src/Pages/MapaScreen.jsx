@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react'
+import { Link } from 'react-router-dom';
+
 import {
   GoogleMap,
   Marker,
@@ -142,10 +144,11 @@ export default function MapaScreen() {
 
   return (
     <div className="relative flex-1">
-      <div className="absolute top-0 left-0 right-0 bg-white p-5 shadow z-10 rounded-b-lg max-w-4xl mx-auto">
-        <div className="flex items-center border border-gray-300 rounded-lg px-3 py-2 mb-4">
+      {/* Barra de búsqueda compacta */}
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-md px-3 py-2 sm:px-4 sm:py-3 shadow-md z-10 rounded-xl max-w-xl w-[90%]">
+        <div className="flex items-center border border-gray-300 rounded-md px-2 py-1 gap-2">
           <svg
-            className="w-5 h-5 text-gray-400 mr-2"
+            className="w-4 h-4 text-gray-400"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
@@ -161,42 +164,38 @@ export default function MapaScreen() {
             <input
               type="text"
               placeholder="Buscar destino"
-              className="flex-1 outline-none text-gray-700 font-medium w-full p-2"
+              className="flex-1 outline-none text-sm text-gray-700 w-full bg-transparent"
               ref={inputRef}
             />
           </Autocomplete>
         </div>
 
-        <div className="flex gap-2 justify-center">
+        {/* Botones de acción más compactos */}
+        <div className="flex justify-center sm:justify-end gap-2 mt-2 flex-wrap">
           <button
             onClick={() =>
-              navigate('/planificar', {
-                state: {
-                  origen: origin,
-                  destino: destination,
-                },
+              navigate('/calculadora', {
+                state: { origen: origin, destino: destination },
               })
             }
-            className="bg-green-600 text-white px-5 py-2 rounded-full font-semibold hover:bg-green-700 transition"
+            className="bg-green-600 text-white text-sm px-4 py-1.5 rounded-full font-medium hover:bg-green-700 transition"
           >
             Planificar
           </button>
-          <button
-            onClick={() => alert('Hoteles')}
-            className="bg-green-600 text-white px-5 py-2 rounded-full font-semibold hover:bg-green-700 transition"
-          >
-            Hoteles
-          </button>
-          <button
-            onClick={() => alert('Actividades')}
-            className="bg-green-600 text-white px-5 py-2 rounded-full font-semibold hover:bg-green-700 transition"
-          >
-            Actividades
-          </button>
+          <Link to="/destinos">
+            <button className="bg-green-600 text-white text-sm px-4 py-1.5 rounded-full font-medium hover:bg-green-700 transition">
+              Destinos
+            </button>
+          </Link>
         </div>
       </div>
 
-      <GoogleMap mapContainerStyle={containerStyle} center={origin || centerDefault} zoom={13}>
+      {/* Mapa y lógica restante igual */}
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={origin || centerDefault}
+        zoom={13}
+      >
         {origin && (
           <Marker
             position={origin}
@@ -225,14 +224,17 @@ export default function MapaScreen() {
         )}
       </GoogleMap>
 
+      {/* Botón Finalizar Viaje */}
       {!isJourneyFinished && origin && destination && directions && (
         <button
           onClick={finalizarViaje}
-          className="absolute bottom-10 right-10 bg-green-700 text-white px-6 py-3 rounded-lg shadow-lg font-semibold hover:bg-green-800 transition"
+          className="absolute bottom-6 right-6 bg-green-700 text-white px-5 py-2.5 rounded-lg shadow-md font-semibold hover:bg-green-800 transition"
         >
           Finalizar Viaje
         </button>
       )}
     </div>
+
+
   )
 }
