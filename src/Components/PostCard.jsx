@@ -60,6 +60,10 @@ export default function PostCard({ post }) {
             return;
         }
 
+        // Optimistic UI update
+        setLiked(prev => !prev);
+        setLikes(prev => (liked ? prev - 1 : prev + 1));
+
         try {
             if (!liked) {
                 const response = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/reacciones-post', {
@@ -77,11 +81,11 @@ export default function PostCard({ post }) {
                 });
 
                 const data = await response.json();
-                if (data.success) {
-                    setLiked(true);
-                    setLikes(prev => prev + 1);
-                } else {
+                if (!data.success) {
                     console.error("Error al crear reacción:", data.message);
+                    // Revert UI if API call fails
+                    setLiked(prev => !prev);
+                    setLikes(prev => prev - 1);
                 }
             } else {
                 const response = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/reacciones-post/${postId}/${userId}`, {
@@ -92,15 +96,18 @@ export default function PostCard({ post }) {
                 });
 
                 const data = await response.json();
-                if (data.success) {
-                    setLiked(false);
-                    setLikes(prev => prev - 1);
-                } else {
+                if (!data.success) {
                     console.error("Error al eliminar reacción:", data.message);
+                    // Revert UI if API call fails
+                    setLiked(prev => !prev);
+                    setLikes(prev => prev + 1);
                 }
             }
         } catch (error) {
             console.error("Error al manejar la reacción:", error);
+            // Revert UI on network error
+            setLiked(prev => !prev);
+            setLikes(prev => (liked ? prev + 1 : prev - 1)); // Corrected revert logic
         }
     };
 
@@ -115,18 +122,16 @@ export default function PostCard({ post }) {
         : null;
 
     useEffect(() => {
-        const fetchPostUser = async () => {
+        const fetchPostData = async () => {
             const token = localStorage.getItem('accessToken');
+            const userId = localStorage.getItem('userId');
             if (!token) return;
 
-            const userInfo = await fetchUserInfo(post.idUsuario, token);
-            setUser(userInfo);
-        };
+            // Fetch user info for the post creator
+            const postUserInfo = await fetchUserInfo(post.idUsuario, token);
+            setUser(postUserInfo);
 
-        const enrichComments = async () => {
-            const token = localStorage.getItem('accessToken');
-            if (!token) return;
-
+            // Fetch comments and enrich them
             const enriched = await Promise.all((post.comments || []).map(async (comment) => {
                 const userInfo = await fetchUserInfo(comment.idUsuario, token);
                 return {
@@ -137,37 +142,32 @@ export default function PostCard({ post }) {
                     date: formatDate(comment.creado_en || comment.date),
                 };
             }));
-
             setComments(enriched);
-        };
 
-        const fetchReacciones = async () => {
-            const accessToken = localStorage.getItem('accessToken');
-            const userId = localStorage.getItem('userId');
-            if (!accessToken || !userId) return;
-
+            // Fetch reactions and determine if the current user has liked it
             try {
                 const response = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/reacciones-post/${post.id}`, {
                     headers: {
-                        'Authorization': `Bearer ${accessToken}`,
+                        'Authorization': `Bearer ${token}`,
                     }
                 });
 
                 const data = await response.json();
                 if (data.success && data.data?.reaccionPost?.idUsuario === parseInt(userId)) {
                     setLiked(true);
+                } else {
+                    setLiked(false); // Ensure it's false if no reaction or by another user
                 }
-
                 setLikes(data.data?.totalReacciones || 0);
             } catch (error) {
                 console.error("Error al obtener reacciones:", error);
+                setLiked(false);
+                setLikes(0);
             }
         };
 
-        fetchPostUser();
-        enrichComments();
-        fetchReacciones();
-    }, [post.idUsuario, post.comments, post.id]);
+        fetchPostData();
+    }, [post.idUsuario, post.comments, post.id]); // Dependencies ensure this runs when post data changes
 
     return (
         <div className="bg-gray-100 flex justify-center items-start p-0 sm:p-4">
@@ -242,18 +242,17 @@ export default function PostCard({ post }) {
                     onClose={() => setIsModalOpen(false)}
                     onReact={handleReactToComment}
                     postId={post.id}
-                    onCommentAdded={(newComment) => {
+                    onCommentAdded={async (newComment) => { // Made this async
                         const token = localStorage.getItem('accessToken');
                         if (!token) return;
-                        fetchUserInfo(newComment.idUsuario, token).then(userInfo => {
-                            setComments(prev => [...prev, {
-                                ...newComment,
-                                user: userInfo.username,
-                                avatar: userInfo.avatar,
-                                text: newComment.contenido,
-                                date: formatDate(newComment.creado_en),
-                            }]);
-                        });
+                        const userInfo = await fetchUserInfo(newComment.idUsuario, token); // Await fetchUserInfo
+                        setComments(prev => [...prev, {
+                            ...newComment,
+                            user: userInfo.username,
+                            avatar: userInfo.avatar,
+                            text: newComment.contenido,
+                            date: formatDate(newComment.creado_en),
+                        }]);
                     }}
                 />
             )}
