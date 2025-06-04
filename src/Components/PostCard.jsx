@@ -154,9 +154,15 @@ export default function PostCard({ post }) {
                 });
 
                 const data = await response.json();
-                if (data.success && data.data?.reaccionPost?.idUsuario === parseInt(userId)) {
-                    setLiked(true);
+                if (data.success && Array.isArray(data.data?.reaccionPost)) {
+                    const reaccionDelUsuario = data.data.reaccionPost.find(
+                        r => r.idUsuario === parseInt(userId)
+                    );
+                    if (reaccionDelUsuario) {
+                        setLiked(true);
+                    }
                 }
+
 
                 setLikes(data.data?.totalReacciones || 0);
             } catch (error) {
