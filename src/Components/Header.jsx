@@ -20,14 +20,29 @@ const Header = () => {
         headers: { Authorization: `Bearer ${accessToken}` }
       })
         .then(res => res.json())
-        .then(data => {
+        .then(async data => {
           if (data.success) {
             setUser(data.data);
-            setUserImg(data.data.imagenURL);
+
+            if (data.data.img_perfil) {
+              try {
+                const imgRes = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/imagen-url/${data.data.img_perfil}`, {
+                  headers: { Authorization: `Bearer ${accessToken}` }
+                });
+
+                const imgData = await imgRes.json();
+                if (imgRes.ok && imgData.success) {
+                  setUserImg(imgData.data.imagenURL);
+                }
+              } catch (err) {
+                console.error("Error al obtener imagen:", err);
+              }
+            }
           }
         });
     }
   }, []);
+
 
   // Cerrar menú si se da clic fuera
   useEffect(() => {
@@ -108,7 +123,6 @@ const Header = () => {
                   <Link to="/mapa" className="block px-4 py-2 text-sm hover:bg-gray-100">Mapa</Link>
                   <Link to="/calculadora" className="block px-4 py-2 text-sm hover:bg-gray-100">Calculadora</Link>
                   <Link to="/destinos" className="block px-4 py-2 text-sm hover:bg-gray-100">Destinos</Link>
-                  <Link to="/configuracion" className="block px-4 py-2 text-sm hover:bg-gray-100">Configuración</Link>
                   <button
                     onClick={handleLogout}
                     className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"

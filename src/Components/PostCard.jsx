@@ -4,7 +4,7 @@ import CommentsModal from './CommentsModal';
 
 export default function PostCard({ post }) {
     const [liked, setLiked] = useState(false);
-    const [likes, setLikes] = useState(post.likes || 0);
+    const [likes, setLikes] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [comments, setComments] = useState([]);
     const [user, setUser] = useState({
@@ -13,21 +13,6 @@ export default function PostCard({ post }) {
     });
 
     const defaultAvatar = 'https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg';
-
-    const mostLikedComment = comments.length > 0
-        ? comments.reduce((prev, current) => (current.likes > prev.likes ? current : prev))
-        : null;
-
-    const handleLike = () => {
-        setLiked(!liked);
-        setLikes((prev) => (liked ? prev - 1 : prev + 1));
-    };
-
-    const handleReactToComment = (index) => {
-        const updated = [...comments];
-        updated[index].likes += 1;
-        setComments(updated);
-    };
 
     const formatDate = (dateString) => {
         const options = { day: 'numeric', month: 'long', year: 'numeric' };
@@ -65,6 +50,70 @@ export default function PostCard({ post }) {
         }
     };
 
+    const handleLike = async () => {
+        const accessToken = localStorage.getItem('accessToken');
+        const userId = localStorage.getItem('userId');
+        const postId = post.id;
+
+        if (!accessToken || !userId) {
+            console.error("Usuario no autenticado.");
+            return;
+        }
+
+        try {
+            if (!liked) {
+                const response = await fetch('https://apis-turisteca-2-ahora-es-personal.onrender.com/api/reacciones-post', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`,
+                    },
+                    body: JSON.stringify({
+                        idPost: postId,
+                        idUsuario: parseInt(userId),
+                        reaccionTipo: 1,
+                        creado_en: new Date().toISOString().split('T')[0]
+                    }),
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    setLiked(true);
+                    setLikes(prev => prev + 1);
+                } else {
+                    console.error("Error al crear reacción:", data.message);
+                }
+            } else {
+                const response = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/reacciones-post/${postId}/${userId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                    },
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    setLiked(false);
+                    setLikes(prev => prev - 1);
+                } else {
+                    console.error("Error al eliminar reacción:", data.message);
+                }
+            }
+        } catch (error) {
+            console.error("Error al manejar la reacción:", error);
+        }
+    };
+
+    const handleReactToComment = (index) => {
+        const updated = [...comments];
+        updated[index].likes += 1;
+        setComments(updated);
+    };
+
+    const mostLikedComment = comments.length > 0
+        ? comments.reduce((prev, current) => (current.likes > prev.likes ? current : prev))
+        : null;
+
     useEffect(() => {
         const fetchPostUser = async () => {
             const token = localStorage.getItem('accessToken');
@@ -92,9 +141,33 @@ export default function PostCard({ post }) {
             setComments(enriched);
         };
 
+        const fetchReacciones = async () => {
+            const accessToken = localStorage.getItem('accessToken');
+            const userId = localStorage.getItem('userId');
+            if (!accessToken || !userId) return;
+
+            try {
+                const response = await fetch(`https://apis-turisteca-2-ahora-es-personal.onrender.com/api/reacciones-post/${post.id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                    }
+                });
+
+                const data = await response.json();
+                if (data.success && data.data?.reaccionPost?.idUsuario === parseInt(userId)) {
+                    setLiked(true);
+                }
+
+                setLikes(data.data?.totalReacciones || 0);
+            } catch (error) {
+                console.error("Error al obtener reacciones:", error);
+            }
+        };
+
         fetchPostUser();
         enrichComments();
-    }, [post.idUsuario, post.comments]);
+        fetchReacciones();
+    }, [post.idUsuario, post.comments, post.id]);
 
     return (
         <div className="bg-gray-100 flex justify-center items-start p-0 sm:p-4">

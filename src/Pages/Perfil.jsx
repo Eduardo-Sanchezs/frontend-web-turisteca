@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PostCard from '../Components/PostCard';
 import Publicar from '../Components/Publicar';
+import { Link } from 'react-router-dom';
 
 const Perfil = () => {
     const [user, setUser] = useState({
@@ -178,9 +179,11 @@ const Perfil = () => {
                                 </div>
                                 <div className="flex flex-col sm:flex-row items-center gap-4 mt-2 justify-center sm:justify-start">
                                     <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800">{user.nombre}</h2>
-                                    <button className="bg-white border border-gray-300 px-4 py-1 rounded-md text-sm hover:bg-gray-100 transition">
-                                        Editar perfil
-                                    </button>
+                                    <Link to="/editar">
+                                        <button className="bg-white border border-gray-300 px-4 py-1 rounded-md text-sm hover:bg-gray-100 transition">
+                                            Editar perfil
+                                        </button>
+                                    </Link>
                                 </div>
                                 <div className="flex justify-center sm:justify-start gap-6 mt-4">
                                     <div>
@@ -194,7 +197,7 @@ const Perfil = () => {
                 </div>
 
                 {user.postsData.length > 0 ? (
-                    <div className="w-screen grid grid-cols-1 ">
+                    <div className="w-full grid grid-cols-1">
                         {user.postsData.map((post) => (
                             <PostCard
                                 key={post.id}

@@ -15,8 +15,11 @@ import DescripcionDestino from './Pages/DescripcionDestino';
 import DescripcionHotel from './Pages/DescripcionHotel';
 import Home from './Pages/Home';
 import Perfil from './Pages/Perfil';
+import Editar from './Pages/EditarPerfil';
 import Mapa from './Pages/MapaScreen';
 import Planificar from './Pages/PlanificarScreen';
+
+import Cargando from './Components/Cargando';
 
 
 import Pruebas from './Pages/Pruebas';
@@ -39,8 +42,12 @@ function App() {
         <Route path='/descripcion-hotel' element={<DescripcionHotel />} />
         <Route path="/home" element={<ProtectedRoute> <Home /> </ProtectedRoute>} />
         <Route path="/perfil" element={<ProtectedRoute> <Perfil /> </ProtectedRoute>} />
+        <Route path="/editar" element={<ProtectedRoute> <Editar /> </ProtectedRoute>} />
         <Route path="/mapa" element={<ProtectedRoute> <Mapa /> </ProtectedRoute>} />
-        <Route path="/planificar" element={<ProtectedRoute> <Planificar /> </ProtectedRoute>} />
+        <Route path="/calculadora" element={<ProtectedRoute> <Planificar /> </ProtectedRoute>} />
+        <Route path='/cargando' element={<Cargando />} />
+
+        {/* Rutas de pruebas y provisionales */}
 
 
 

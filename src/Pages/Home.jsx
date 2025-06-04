@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PostCard from '../Components/PostCard';
 import Publicar from '../Components/Publicar';
+import Cargando from '../Components/Cargando';
 
 const Home = () => {
     const [posts, setPosts] = useState([]);
@@ -79,7 +80,9 @@ const Home = () => {
         fetchData();
     }, []);
 
-    if (loading) return <div className="text-center mt-10">Cargando publicaciones...</div>;
+    if (loading) {
+        return <Cargando />;
+    }
 
     return (
         <>
